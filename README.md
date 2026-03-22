@@ -1,172 +1,318 @@
-# Álvaro & Lama — Wedding Website Build Guide
+# Wedding website — Master spec & build reference
 
-This README analyses the client’s React mock (a **design baseline**, not production code) and outlines concrete steps to build the real site.
+**Couple:** Álvaro Recas & Lama Loay  
+**Date:** 17 April 2027  
+**Venue:** Castillo de Monda, Málaga, Spain  
 
----
-
-## What the client sent
-
-The file is a **single-page React component** that:
-
-- Renders **seven labelled UI screens** (desktop home, wedding details, travel & stay, RSVP desktop, “two forms” explainer, mobile home, mobile RSVP).
-- Documents a **colour palette**, **typography** (serif headings + sans body), and **UI principles**.
-- Uses **Tailwind-style utility classes** as layout/styling shorthand — treat these as **design tokens and spacing rules**, not as the final component structure.
-
-**Important:** Navigation items **Gifts** and **FAQ** appear in the header but have **no dedicated mock screens** in this file. You will need copy, layout, or another deliverable from the client for those pages.
+This document is the **authoritative product spec**. An earlier version of this README only analysed the client’s **React UI mock**; it did **not** include the items below (full names, Málaga, strict menu order with **RSVP in the nav**, **footer** content, **8-step** Form 1 flow, **Form 2** fields, **exact** Travel/Gifts copy, **booking links**, **email campaign** plan, **image** direction, or **business rules** like CSV export and hotel handoff).
 
 ---
 
-## Site map (from the spec)
+## What the mock-only README missed (now covered here)
 
-| Route / section   | In mocks? | Notes |
-|-------------------|-----------|--------|
-| Home              | Yes       | Hero, CTAs, quick facts card |
-| Wedding           | Yes       | Venue intro, timeline, weather, dress code |
-| Travel & Stay     | Yes       | Castle stay, getting there, accommodation cards, transfers |
-| RSVP              | Yes       | Multi-step flow (7 steps), progress bar |
-| How it works      | Yes       | Two-form explanation — can live on RSVP or FAQ |
-| Gifts             | No        | Nav only |
-| FAQ               | No        | Nav only |
+| Topic | Old README | Master spec |
+|--------|------------|-------------|
+| Couple naming | “Álvaro & Lama” shorthand | Full names: **Álvaro Recas & Lama Loay** |
+| Venue line | “Monda, Spain” | **Castillo de Monda, Málaga, Spain** |
+| Header nav | Home → Wedding → Travel → Gifts → FAQ (+ RSVP CTA) | **Home → Wedding → Travel & Stay → Gifts → RSVP → FAQ**, plus **RSVP** CTA on the right |
+| Footer | Listed as optional | **Required:** names, date, venue, RSVP + Contact links, tagline |
+| Home hero | “A celebration in Andalusia” style from mock | Title **Álvaro & Lama**, subtitle **We are getting married**, intro + quick info bullets |
+| Travel | Paraphrased castle copy | **Exact** castle paragraph + **Important** bullets + **Booking.com / Skyscanner** links per area |
+| Gifts | Placeholder | **Exact** copy about presence + contribution *(details later)* |
+| RSVP | 7 steps (inferred from mock) | **Form 1:** **8 steps** — Contact → Attendance → Plus one → Welcome dinner → Accommodation → Transport → Dietary → Review; **phone** + **light dietary** on Form 1 |
+| Second form | Mentioned generally | **Form 2 — Logistics (Feb 2027)** with its own fields; **must not** merge with Form 1 |
+| Payments | Implied | **Must not** handle payments or auto-confirm bookings |
+| Operations | Not stated | **CSV export**; forward accommodation interest **to hotel** |
+| Email | Not stated | **5-step** invitation → reminder → confirmation → logistics → final |
+| Visual style | “Soft luxury”, shadows in mock | **No heavy shadows**; Mediterranean, warm spacing |
+| Images | Generic castle | Search terms: Andalusian castle sunset, Castillo de Monda exterior, tiles, olives, stone, sunset |
 
 ---
 
-## Design system (extract from mock)
+## 1. Objective
 
-### Colours
+Build a responsive wedding website + RSVP system that:
 
-| Token (name)   | Hex       | Typical use |
-|----------------|-----------|-------------|
-| Warm ivory     | `#F8F5F0` | Page background, subtle fills |
-| Deep cobalt    | `#2F4A6D` | Headings, primary buttons, key UI |
-| Dusty blue     | `#7C9AB0` | Labels, accents, secondary text |
-| Olive green    | `#7A8A6A` | Listed in palette; use for subtle accents if needed |
-| Sand beige     | `#E8DFD3` | Cards, progress track, highlight panels |
-| Charcoal       | `#2B2B2B` | Body text |
+- Is elegant, simple, and **mobile-first**
+- Serves **international** guests with clear travel/stay info
+- Collects **RSVP + accommodation requests**
+- Does **not** handle payments
+- Is straightforward to build with AI or a junior developer
+
+---
+
+## 2. Website structure
+
+### Main menu (header)
+
+Order (strict):
+
+1. Home  
+2. Wedding  
+3. Travel & Stay  
+4. Gifts  
+5. RSVP  
+6. FAQ  
+
+**Right-side CTA:** RSVP (button).
+
+### Footer
+
+- **Álvaro & Lama** (display name; full legal names in spec header)  
+- **17 April 2027**  
+- **Castillo de Monda, Spain**  
+
+**Links:**
+
+- RSVP  
+- Contact (email — use a real address in production; see `src/config.ts`)
+
+**Line of text:**  
+*Made with love for our friends and family*
+
+---
+
+## 3. Design system
+
+### Colours (strict)
+
+| Role | Hex |
+|------|-----|
+| Background | `#F8F5F0` |
+| Primary | `#2F4A6D` |
+| Secondary | `#7C9AB0` |
+| Accent | `#7A8A6A` |
+| Highlight | `#E8DFD3` |
+| Text | `#2B2B2B` |
 
 ### Typography
 
-- **Headings:** Playfair Display (or equivalent serif).
-- **Body:** Inter (or equivalent sans-serif).
+- **Headings:** Playfair Display  
+- **Body:** Inter  
 
-Load via Google Fonts or self-host; set CSS variables or Tailwind `fontFamily` so headings and body stay consistent.
+### Style rules
 
-### UI patterns
-
-- Large **rounded corners** (~20–28px on major cards; full-width sections with `overflow-hidden` where shown).
-- **Soft luxury:** generous padding, light shadows, ivory/beige backgrounds, minimal clutter.
-- **Desktop:** sticky header — logo left, nav centre/right, **RSVP** as primary CTA on the right.
-- **Mobile:** header — **logo + RSVP pill + hamburger**; stack content; **large tap targets**; short copy.
-
-### Imagery
-
-- **Home hero:** full-width **castle** photography with a **soft ivory overlay** (mock uses a gradient placeholder — replace with real asset and overlay in CSS).
+- Soft, elegant, Mediterranean  
+- Rounded corners **20–30px**  
+- **No heavy shadows**  
+- Warm spacing  
+- **Mobile-first**  
 
 ---
 
-## Content inventory (copy already in mocks)
+## 4. Home page (full content)
 
-Use this as a starting CMS or static content map; confirm dates, prices, and legal wording with the couple before launch.
+### Hero
 
-- **Couple / brand:** “Álvaro & Lama”
-- **Event:** 17 April 2027, Castillo de Monda, Monda, Spain
-- **RSVP deadline:** 1 November 2026
-- **Timeline:** 16:30 Arrival → 17:00 Ceremony → 18:00 Cocktail → 20:00 Dinner → 22:30 Party
-- **Weather / dress copy** as in Wedding Details screen
-- **Travel:** Málaga airport ~40 min; options: Taxi, Rental car, Organised transfer
-- **Accommodation bands:** Monda €90–€180; nearby villages €80–€200; Marbella €150–€400; transfers €95–€110 total
-- **Transfer tiers:** up to 4 people €95 total; up to 7 people €100–€110 total
-- **Legal / operational (must stay prominent):** RSVP does **not** confirm a castle room; **hotel contacts guest**; **payment at reservation**; **breakfast €15** per person
-- **Two-form process:** Form 1 — now until 1 Nov 2026 (attendance, plus one, accommodation, transfer interest, welcome dinner estimate). Form 2 — **February 2027** (flights/arrival, final transfers, dietary/allergies, last practical info)
+- **Title:** Álvaro & Lama  
+- **Subtitle:** We are getting married  
+- **Text:** We are so happy to celebrate this special moment with you in Andalusia.  
+- **Date line:** 17 April 2027 — Castillo de Monda  
+- **Buttons:** RSVP · View Details  
 
----
+### Intro
 
-## RSVP flow (what we know vs what to define)
+Welcome to our wedding website.  
+Here you’ll find everything you need to plan your trip, organise your stay, and celebrate with us.
 
-The mock shows **“Step X of 7”** and two example steps:
+### Quick info
 
-1. **Attendance** (mobile example): Yes / No / Not sure + deadline callout.
-2. **Accommodation** (desktop example): Castle yes/no/unsure, room type, breakfast, **large “Important”** disclaimer.
-
-**You still need from the client** the exact list of all **7 steps**, field names, validation rules, and where data is stored (see below). Reasonable candidates for the missing steps (to validate with them): plus-one, transfer interest, welcome dinner estimate, dietary (or defer to Form 2), contact details, review/submit.
+- Castillo de Monda, Spain  
+- 17 April 2027  
+- Málaga Airport (~40 min)  
+- Accommodation available  
 
 ---
 
-## Recommended tech approach
+## 5. Wedding page
 
-The mock aligns naturally with:
+### Venue
 
-- **React** (Vite or Next.js).
-- **Tailwind CSS** (matches the utility-class style).
-- **Routing:** React Router or Next.js App Router — one route per main nav item.
-- **Forms:** React Hook Form (or similar) + accessible stepper component; persist draft in `localStorage` if you want recovery on refresh (confirm with client).
-- **Backend / data:** Choose based on budget:
-  - **Low friction:** Google Forms / Typeform / Tally for MVP (less custom UI).
-  - **Custom:** Serverless API + database (e.g. Supabase, PlanetScale, Firebase) + email notifications to the couple.
-- **Hosting:** Vercel, Netlify, or Cloudflare Pages for a static/SSR React site.
-- **Analytics / privacy:** only if the couple wants it; keep GDPR in mind for EU guests.
+Castillo de Monda is a historic Andalusian castle nestled in the mountains near Marbella, offering breathtaking views and a unique blend of Spanish and Moorish heritage.
 
----
+### Schedule
 
-## Step-by-step build plan
+- 16:30 Arrival  
+- 17:00 Ceremony  
+- 18:00 Cocktail  
+- 20:00 Dinner  
+- 22:30 Party  
 
-### Phase 1 — Project foundation
+### Weather
 
-1. Scaffold **React + TypeScript** (Vite or Next.js).
-2. Add **Tailwind**; configure `theme.extend` with the **hex palette** and **font families** (Playfair + Inter).
-3. Add global styles: base background `#F8F5F0` or white per section, default text `#2B2B2B`, link/button focus states for accessibility.
+18–21°C daytime · 10–13°C evening — bring a light layer.
 
-### Phase 2 — Layout shell
+### Dress code
 
-4. Build **`<SiteHeader />`**:
-   - Desktop: logo, links (Home, Wedding, Travel & Stay, Gifts, FAQ), **RSVP** button.
-   - Mobile: logo, RSVP pill, hamburger; slide-down or full-screen **nav menu**.
-   - Make header **sticky** with appropriate `z-index` and backdrop if specified (mock uses semi-transparent white bar).
-5. Build **`<SiteFooter />`** (optional but typical): repeat key date/location, contact, privacy if you collect data.
-
-### Phase 3 — Marketing pages
-
-6. **Home:** hero (image + overlay), headline, subcopy, primary **RSVP** and secondary **View details**; replicate the **quick facts** strip (date, place, stay, RSVP by) — desktop grid vs mobile stack per mock.
-7. **Wedding details:** two-column intro + date card; **timeline** as a row of cards (desktop); stack on mobile; **Weather** and **Dress code** side-by-side (stack on small screens).
-8. **Travel & Stay:** two top cards (castle stay + getting there); **four accommodation/price cards**; **transfer** section with pricing grid.
-9. **Gifts & FAQ:** **request copy and wireframes** from client, or propose a simple layout matching the same card/typography system.
-
-### Phase 4 — “How it works”
-
-10. Implement the **two-form explanation** as a section on the **RSVP landing page** and/or a **FAQ** entry, using the exact messaging from the mock so guests understand timing (now vs Feb 2027).
-
-### Phase 5 — RSVP (highest risk / highest value)
-
-11. Map the **7 steps** with the client; define each screen’s fields and validation.
-12. Build a **stepper**: progress bar, step label (“Step n of 7”), **Back** / **Continue**, keyboard and screen-reader friendly (ARIA `aria-current`, live region for step changes).
-13. Ensure **accommodation + payment disclaimers** appear on the right steps and use **high-contrast callout** styling (sand/beige panel + bold “Important”) so they are “impossible to miss,” per client notes.
-14. Wire **form submission** to your backend or third-party form service; send confirmation email to guest if possible.
-15. Add **deadline messaging** (1 Nov 2026) where relevant (e.g. attendance step).
-
-### Phase 6 — QA and launch
-
-16. **Responsive pass:** breakpoints for timeline (5 columns → horizontal scroll or 2–3 columns → single column), accommodation cards (4 → 2 → 1), hero (two-column → stacked).
-17. **Accessibility:** colour contrast (especially dusty blue on ivory), focus rings, form labels, error messages.
-18. **Performance:** optimise hero image (WebP/AVIF, `sizes`, lazy load below fold).
-19. **SEO / sharing:** title, meta description, Open Graph image (couple photo or venue).
-20. **Legal:** privacy policy if you store personal data; cookie banner if required.
+Elegant / formal — outdoor-friendly shoes recommended.
 
 ---
 
-## Questions to send back to the client
+## 6. Travel & stay (critical)
 
-- Final **list of all 7 RSVP steps** and required fields.
-- **Gifts** page: registry links, charity, or “no gifts” wording?
-- **FAQ** topics and answers.
-- **Hero and venue photos** (licence/resolution), plus any **Spanish/English** language requirements.
-- **RSVP backend preference** (custom vs form tool) and who receives notifications.
-- Confirm **prices and dates** are final (€ amounts, breakfast, transfer tiers, RSVP deadline).
+### Getting there
+
+- Nearest airport: **Málaga-Costa del Sol Airport**  
+- Transport: **Taxi**, **Rental car**, **Transfer** (wording per spec — not necessarily “Organised transfer”)
+
+### Castle accommodation (exact text)
+
+> If you would like to stay at Castillo de Monda, please indicate your interest in the RSVP form.  
+> The hotel will contact you directly to confirm availability and booking details.
+
+**Important:**
+
+- Submitting the form does **NOT** confirm a reservation  
+- Payment is required at the time of booking  
+- Breakfast: **€15** per person  
+
+### Alternative accommodation
+
+If you prefer not to stay at the castle, there are many nearby options.
+
+| Area | Notes | Link (spec) |
+|------|--------|-------------|
+| **Monda** | Guesthouses / rentals, €90–€180 / night | https://www.booking.com/city/es/monda.html |
+| **Nearby villages** (Ojén, Coín, Tolox) | €80–€200 / night | https://www.skyscanner.net/hotels/spain/monda-hotels |
+| **Marbella** (best option) | 20–25 min, €150–€400 / night | https://www.booking.com/city/es/marbella.html |
+
+### Transfers
+
+- Optional, **paid by guests**  
+- **€95** total — up to 4 people  
+- **€100–110** total — up to 7 people  
+- Group guests where possible  
 
 ---
 
-## Optional: preserving the mock as reference
+## 7. Gifts page (exact copy)
 
-You can keep the client’s component in the repo (e.g. `/design-reference/App.jsx`) behind a dev-only route so designers and developers can compare implementation to the baseline. Do not ship that page to production unless the couple wants an internal style guide.
+Your presence at our wedding is the greatest gift of all.  
+If you wish to contribute, we would be grateful for a contribution towards our future together.  
+*(Details shared later)*
 
 ---
 
-*Generated from the client’s React UI baseline. Update this README as scope and copy are confirmed.*
+## 8. RSVP system (critical)
+
+### Rule
+
+The system **must** include **two separate forms** (different flows or URLs). **Do not** merge Form 1 and Form 2.
+
+### Why two forms
+
+- Less friction early  
+- Accurate data at the right time  
+- Avoids early flight uncertainty  
+
+### Form 1 — RSVP (now)
+
+**Deadline:** 1 November 2026  
+
+**Purpose:** Attendance, guest count estimate, accommodation, welcome dinner planning.
+
+**Fields (grouped):**
+
+1. **Contact:** full name, email, **phone**  
+2. **Attendance:** Yes / No / Not sure  
+3. **Plus one:** Yes / No + name  
+4. **Welcome dinner:** Yes / No / Not sure  
+5. **Accommodation:** Stay at castle? Yes / No / Maybe; room type (optional); breakfast Yes / No  
+6. **Important block (must show):** hotel contacts guest; form does not confirm reservation; payment at booking  
+7. **Transport:** Need transfer? Yes / No / Maybe  
+8. **Dietary (light):** restrictions (optional)  
+
+### UX flow (Form 1 steps)
+
+1. Contact  
+2. Attendance  
+3. Plus one  
+4. Welcome dinner  
+5. Accommodation  
+6. Transport  
+7. Dietary  
+8. Review  
+
+### Form 2 — Logistics (February 2027)
+
+**Purpose:** Final planning, transfers, seating.
+
+**Fields:** Flight arrival, flight departure, arrival time, transfer confirmation, dietary (final).
+
+---
+
+## 9. Email flow
+
+1. **Invitation** — send with website  
+2. **Reminder** — mid-October  
+3. **Confirmation** — after RSVP  
+4. **Logistics** — February  
+5. **Final info** — one week before  
+
+---
+
+## 10. Images
+
+**Hero:** search e.g. “Andalusian castle sunset”, “Castillo de Monda exterior”.  
+
+**Support:** Spanish blue tiles, olive trees, warm stone walls, sunset lighting.  
+
+**Style:** Natural, elegant — avoid cheesy wedding stock.
+
+---
+
+## 11. Business rules
+
+### Must
+
+- **Not** handle payments  
+- **Send** accommodation requests to the hotel (process/integration TBD)  
+- Allow **CSV export** of RSVPs  
+
+### Must not
+
+- Confirm bookings automatically  
+- Handle money  
+- Merge RSVP (Form 1) with logistics (Form 2)  
+
+---
+
+## Implementation status (this repo)
+
+Rough audit against the master spec:
+
+| Area | Status |
+|------|--------|
+| Stack (Vite, React, TS, Tailwind, Router) | Done |
+| Header order + RSVP in nav + CTA (§2) | Done |
+| Footer (§2) | Done — set **`CONTACT_EMAIL`** in `src/config.ts` |
+| Home copy (§4) | Hero, intro, quick info aligned |
+| Wedding / Travel / Gifts exact copy & links | Aligned; external booking links open in new tab |
+| Form 1 — 8 steps (Contact → … → Dietary → Review) + phone | Done — see `src/pages/RSVP.tsx` |
+| Form 2 — logistics (Feb 2027) | Done — **`/logistics`** (`LogisticsForm.tsx`); linked from RSVP “How it works” |
+| CSV export | Done — per-submission download after submit; bulk **`/export`** (localStorage demo only) |
+| Hotel notify | **Not automated** — export CSV / connect email or PMS per §11 |
+| No payments / no auto-booking | No payment UI |
+| Email automation (§9) | **Not built** — external ESP / manual |
+| Shadows | Tone down if any feel “heavy” vs §3 |
+
+---
+
+## Dev commands
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+**Extra routes (not in main nav):**
+
+- **`/logistics`** — Form 2 (logistics / February 2027).  
+- **`/export`** — Download all saved RSVPs + logistics as CSV (uses **localStorage** in this demo — replace with a secured admin + database before production).
+
+---
+
+## Optional: original UI mock
+
+The first client deliverable was a single React file with **Tailwind-style** screen mockups. It remains a useful **visual** reference for spacing and cards, but **copy, menu order, RSVP structure, footer, and operations** come from this **master spec**, not from the mock.

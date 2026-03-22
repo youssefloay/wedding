@@ -5,18 +5,15 @@ export function Gifts() {
         <p className="mb-3 text-center text-xs uppercase tracking-[0.25em] text-[#7C9AB0] sm:text-sm">
           Gifts
         </p>
-        <h1 className="font-serif text-center text-4xl text-[#2F4A6D] sm:text-5xl mb-6">
-          Your presence is our present
-        </h1>
-        <div className="rounded-[24px] bg-white p-8 shadow-sm border border-[#E8DFD3]/80">
-          <p className="text-center text-lg text-[#2B2B2B] mb-6">
-            We are grateful simply to celebrate with you. If you wish to give something, we will share
-            registry or charity details here once they are finalised.
+        <h1 className="font-serif text-center text-4xl text-[#2F4A6D] sm:text-5xl mb-8">Gifts</h1>
+        <div className="rounded-[24px] bg-white p-8 border border-[#E8DFD3]/80 sm:p-10">
+          <p className="text-center text-lg leading-relaxed text-[#2B2B2B] mb-4">
+            Your presence at our wedding is the greatest gift of all.
           </p>
-          <p className="text-center text-sm text-[#7C9AB0]">
-            Content placeholder — replace with the couple&apos;s wishes (registry links, honeymoon fund,
-            or &ldquo;no gifts&rdquo; wording).
+          <p className="text-center text-lg leading-relaxed text-[#2B2B2B] mb-6">
+            If you wish to contribute, we would be grateful for a contribution towards our future together.
           </p>
+          <p className="text-center text-sm italic text-[#7C9AB0]">(Details shared later)</p>
         </div>
       </div>
     </div>

@@ -1,53 +1,58 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { appendRsvp, downloadCsvFile, rowsToCsv, type SubmissionRow } from "../lib/submissions";
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 type Attendance = "yes" | "no" | "unsure" | "";
-type Accommodation = "castle" | "elsewhere" | "unsure" | "";
+type StayCastle = "yes" | "no" | "maybe" | "";
 
 type FormState = {
-  attendance: Attendance;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
+  phone: string;
+  attendance: Attendance;
   hasPlusOne: "yes" | "no" | "";
-  plusOneFirstName: string;
-  plusOneLastName: string;
-  accommodation: Accommodation;
+  plusOneName: string;
+  welcomeDinner: "yes" | "no" | "maybe" | "";
+  welcomeGuests: string;
+  stayAtCastle: StayCastle;
   roomType: string;
   breakfast: "yes" | "no" | "";
   transfer: "yes" | "no" | "maybe" | "";
-  welcomeDinner: "yes" | "no" | "maybe" | "";
-  welcomeGuests: string;
+  dietary: string;
 };
 
 const initialForm: FormState = {
-  attendance: "",
-  firstName: "",
-  lastName: "",
+  fullName: "",
   email: "",
+  phone: "",
+  attendance: "",
   hasPlusOne: "",
-  plusOneFirstName: "",
-  plusOneLastName: "",
-  accommodation: "",
-  roomType: "Double",
-  breakfast: "",
-  transfer: "",
+  plusOneName: "",
   welcomeDinner: "",
   welcomeGuests: "",
+  stayAtCastle: "",
+  roomType: "",
+  breakfast: "",
+  transfer: "",
+  dietary: "",
 };
 
 function ChoiceRow({
   options,
   value,
   onChange,
+  columns = 3,
 }: {
   options: readonly string[];
   value: string;
   onChange: (v: string) => void;
+  columns?: 2 | 3;
 }) {
+  const grid = columns === 2 ? "sm:grid-cols-2" : "sm:grid-cols-3";
   return (
-    <div className="grid gap-3 sm:grid-cols-3">
+    <div className={`grid gap-3 ${grid}`}>
       {options.map((opt) => (
         <button
           key={opt}
@@ -69,7 +74,7 @@ function ChoiceRow({
 function HowItWorks() {
   return (
     <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-      <div className="rounded-[28px] border border-[#E8DFD3] bg-[#F8F5F0] p-6 shadow-sm sm:p-10">
+      <div className="rounded-[28px] border border-[#E8DFD3] bg-[#F8F5F0] p-6 sm:p-10">
         <div className="mx-auto mb-10 max-w-3xl text-center">
           <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#7C9AB0] sm:text-sm">How it works</p>
           <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-5xl mb-4">A simple two-step process</h2>
@@ -79,8 +84,8 @@ function HowItWorks() {
           </p>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[24px] bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-2 text-sm text-[#7C9AB0]">Step 1 — RSVP</div>
+          <div className="rounded-[24px] bg-white p-6 sm:p-8">
+            <div className="mb-2 text-sm text-[#7C9AB0]">Form 1 — RSVP</div>
             <h3 className="font-serif text-2xl text-[#2F4A6D] sm:text-3xl mb-3">Now until 1 November 2026</h3>
             <ul className="list-disc space-y-2 pl-5 text-sm text-[#2B2B2B]">
               <li>Confirm attendance</li>
@@ -90,15 +95,21 @@ function HowItWorks() {
               <li>Help us estimate the welcome dinner</li>
             </ul>
           </div>
-          <div className="rounded-[24px] bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-2 text-sm text-[#7C9AB0]">Step 2 — Final details</div>
-            <h3 className="font-serif text-2xl text-[#2F4A6D] sm:text-3xl mb-3">Sent in February 2027</h3>
+          <div className="rounded-[24px] bg-white p-6 sm:p-8">
+            <div className="mb-2 text-sm text-[#7C9AB0]">Form 2 — Logistics</div>
+            <h3 className="font-serif text-2xl text-[#2F4A6D] sm:text-3xl mb-3">February 2027</h3>
             <ul className="list-disc space-y-2 pl-5 text-sm text-[#2B2B2B]">
               <li>Flight and arrival details</li>
               <li>Final transfer coordination</li>
-              <li>Dietary restrictions and allergies</li>
+              <li>Dietary restrictions and allergies (final)</li>
               <li>Last practical information</li>
             </ul>
+            <Link
+              to="/logistics"
+              className="mt-6 inline-flex rounded-full border border-[#2F4A6D] px-5 py-2 text-sm font-medium text-[#2F4A6D]"
+            >
+              Open logistics form (Form 2)
+            </Link>
           </div>
         </div>
       </div>
@@ -106,10 +117,29 @@ function HowItWorks() {
   );
 }
 
+function formToRow(form: FormState): SubmissionRow {
+  return {
+    fullName: form.fullName.trim(),
+    email: form.email.trim(),
+    phone: form.phone.trim(),
+    attendance: form.attendance,
+    hasPlusOne: form.hasPlusOne,
+    plusOneName: form.plusOneName.trim(),
+    welcomeDinner: form.welcomeDinner,
+    welcomeGuests: form.welcomeGuests.trim(),
+    stayAtCastle: form.stayAtCastle,
+    roomType: form.roomType.trim(),
+    breakfast: form.breakfast,
+    transfer: form.transfer,
+    dietary: form.dietary.trim(),
+  };
+}
+
 export function RSVP() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormState>(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [savedRow, setSavedRow] = useState<SubmissionRow | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const attending = form.attendance === "yes" || form.attendance === "unsure";
@@ -122,36 +152,36 @@ export function RSVP() {
 
   function validateStep(): string | null {
     switch (step) {
+      case 1:
+        if (!form.fullName.trim()) return "Please enter your full name.";
+        if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
+          return "Please enter a valid email.";
+        if (!form.phone.trim() || form.phone.trim().length < 6) return "Please enter a valid phone number.";
+        return null;
       case 2:
         if (!form.attendance) return "Please select whether you will attend.";
         return null;
       case 3:
-        if (!form.firstName.trim() || !form.lastName.trim()) return "Please enter your name.";
-        if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-          return "Please enter a valid email.";
-        if (attending) {
-          if (!form.hasPlusOne) return "Please let us know if you are bringing a guest.";
-          if (form.hasPlusOne === "yes") {
-            if (!form.plusOneFirstName.trim() || !form.plusOneLastName.trim())
-              return "Please enter your guest's name.";
-          }
-        }
+        if (!attending) return null;
+        if (!form.hasPlusOne) return "Please let us know if you are bringing a guest.";
+        if (form.hasPlusOne === "yes" && !form.plusOneName.trim()) return "Please enter your guest's name.";
         return null;
       case 4:
         if (!attending) return null;
-        if (!form.accommodation) return "Please choose an accommodation option.";
-        if (form.accommodation === "castle") {
-          if (!form.roomType.trim()) return "Please select a room type.";
-          if (!form.breakfast) return "Please indicate breakfast preference.";
-        }
+        if (!form.welcomeDinner) return "Please respond about the welcome dinner.";
         return null;
       case 5:
         if (!attending) return null;
-        if (!form.transfer) return "Please indicate transfer interest.";
+        if (!form.stayAtCastle) return "Please indicate if you would like to stay at the castle.";
+        if (form.stayAtCastle === "yes" || form.stayAtCastle === "maybe") {
+          if (!form.breakfast) return "Please indicate breakfast preference (€15 per person).";
+        }
         return null;
       case 6:
         if (!attending) return null;
-        if (!form.welcomeDinner) return "Please respond about the welcome dinner.";
+        if (!form.transfer) return "Please indicate if you need a transfer.";
+        return null;
+      case 7:
         return null;
       default:
         return null;
@@ -178,19 +208,45 @@ export function RSVP() {
       setError(err);
       return;
     }
-    console.info("RSVP submission", form);
+    const row = formToRow(form);
+    const saved = appendRsvp(row);
+    console.info("RSVP submission", saved);
+    setSavedRow(saved);
     setSubmitted(true);
   }
 
-  if (submitted) {
+  if (submitted && savedRow) {
+    const csv = rowsToCsv([savedRow]);
     return (
       <div className="min-h-[70vh] bg-gradient-to-b from-[#F8F5F0] to-[#E8DFD3] px-4 py-16 sm:py-24">
-        <div className="mx-auto max-w-lg rounded-[28px] bg-white p-8 text-center shadow-xl sm:p-10">
+        <div className="mx-auto max-w-lg rounded-[28px] bg-white p-8 text-center sm:p-10">
           <h1 className="font-serif text-3xl text-[#2F4A6D] mb-4">Thank you</h1>
-          <p className="text-[#2B2B2B]">
-            Your RSVP has been recorded. This demo prints data to the browser console only — connect a
-            backend or form service to receive submissions.
+          <p className="text-[#2B2B2B] mb-6">
+            Your RSVP has been saved in this browser for the demo. In production, wire this to email and a
+            database, and forward accommodation requests to the hotel as per your process.
           </p>
+          <button
+            type="button"
+            onClick={() => downloadCsvFile(`rsvp-${Date.now()}.csv`, csv)}
+            className="mb-3 w-full rounded-full bg-[#2F4A6D] px-6 py-3 text-white"
+          >
+            Download this RSVP (CSV)
+          </button>
+          <p className="mb-4 text-xs text-[#7C9AB0]">
+            <Link to="/export" className="underline">
+              Bulk export (organiser)
+            </Link>
+          </p>
+          <p className="mb-4 text-sm text-[#2B2B2B]">
+            In <strong>February 2027</strong> you&apos;ll receive a link for{" "}
+            <Link to="/logistics" className="text-[#2F4A6D] underline">
+              Form 2 — logistics
+            </Link>
+            .
+          </p>
+          <Link to="/" className="text-sm text-[#7C9AB0] underline">
+            Back to home
+          </Link>
         </div>
       </div>
     );
@@ -202,9 +258,9 @@ export function RSVP() {
 
       <div className="bg-gradient-to-b from-[#F8F5F0] to-[#E8DFD3] px-4 pb-16 pt-2 sm:px-6 lg:px-8 lg:pb-24">
         <div className="mx-auto flex min-h-[560px] max-w-3xl items-center justify-center">
-          <div className="w-full rounded-[28px] bg-white p-6 shadow-xl sm:p-8">
+          <div className="w-full rounded-[28px] bg-white p-6 sm:p-8">
             <div className="mb-6 flex justify-between text-xs text-[#7C9AB0] sm:text-sm">
-              <span>RSVP</span>
+              <span>RSVP — Form 1</span>
               <span>
                 Step {step} of {TOTAL_STEPS}
               </span>
@@ -224,14 +280,50 @@ export function RSVP() {
 
             {step === 1 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-3">Before you begin</h2>
-                <p className="mb-6 text-[#2B2B2B]">
-                  This form takes a few minutes. You can use the Back button to change answers. The RSVP
-                  deadline is <strong>1 November 2026</strong>.
+                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Contact</h2>
+                <p className="mb-6 text-sm text-[#2B2B2B] sm:text-base">
+                  RSVP deadline: <strong>1 November 2026</strong>. A separate logistics form will follow in{" "}
+                  <strong>February 2027</strong>.
                 </p>
-                <div className="rounded-[20px] bg-[#E8DFD3] p-5 text-sm text-[#2B2B2B]">
-                  <strong>Note:</strong> A second form will be sent in <strong>February 2027</strong> for
-                  flights, final transfers, and dietary requirements.
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm text-[#7C9AB0]" htmlFor="fullName">
+                      Full name
+                    </label>
+                    <input
+                      id="fullName"
+                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                      value={form.fullName}
+                      onChange={(e) => update("fullName", e.target.value)}
+                      autoComplete="name"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-[#7C9AB0]" htmlFor="email">
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                      value={form.email}
+                      onChange={(e) => update("email", e.target.value)}
+                      autoComplete="email"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-[#7C9AB0]" htmlFor="phone">
+                      Phone
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                      value={form.phone}
+                      onChange={(e) => update("phone", e.target.value)}
+                      autoComplete="tel"
+                    />
+                  </div>
                 </div>
               </>
             )}
@@ -240,229 +332,79 @@ export function RSVP() {
               <>
                 <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Attendance</h2>
                 <p className="mb-5 text-sm text-[#2B2B2B] sm:text-base">
-                  Please confirm whether you will be joining us on 17 April 2027.
+                  Will you join us on 17 April 2027?
                 </p>
                 <ChoiceRow
-                  options={["Yes, I will attend", "No, I won’t be able to attend", "I’m not sure yet"]}
+                  options={["Yes", "No", "Not sure"]}
                   value={
                     form.attendance === "yes"
-                      ? "Yes, I will attend"
+                      ? "Yes"
                       : form.attendance === "no"
-                        ? "No, I won’t be able to attend"
+                        ? "No"
                         : form.attendance === "unsure"
-                          ? "I’m not sure yet"
+                          ? "Not sure"
                           : ""
                   }
                   onChange={(v) => {
-                    if (v.startsWith("Yes")) update("attendance", "yes");
-                    else if (v.startsWith("No")) update("attendance", "no");
+                    if (v === "Yes") update("attendance", "yes");
+                    else if (v === "No") update("attendance", "no");
                     else update("attendance", "unsure");
                   }}
                 />
-                <div className="mt-5 rounded-[18px] bg-[#E8DFD3] p-4 text-sm text-[#2B2B2B]">
-                  RSVP deadline: <strong>1 November 2026</strong>
-                </div>
               </>
             )}
 
             {step === 3 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Your details</h2>
-                <p className="mb-5 text-sm text-[#2B2B2B]">
-                  So we can keep you updated{attending ? " and plan for your guest" : ""}.
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="text-sm text-[#7C9AB0]" htmlFor="fn">
-                      First name
-                    </label>
-                    <input
-                      id="fn"
-                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3 text-[#2B2B2B]"
-                      value={form.firstName}
-                      onChange={(e) => update("firstName", e.target.value)}
-                      autoComplete="given-name"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm text-[#7C9AB0]" htmlFor="ln">
-                      Last name
-                    </label>
-                    <input
-                      id="ln"
-                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3 text-[#2B2B2B]"
-                      value={form.lastName}
-                      onChange={(e) => update("lastName", e.target.value)}
-                      autoComplete="family-name"
-                    />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-sm text-[#7C9AB0]" htmlFor="em">
-                      Email
-                    </label>
-                    <input
-                      id="em"
-                      type="email"
-                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3 text-[#2B2B2B]"
-                      value={form.email}
-                      onChange={(e) => update("email", e.target.value)}
-                      autoComplete="email"
-                    />
-                  </div>
-                </div>
-                {attending && (
-                  <div className="mt-6 space-y-4">
-                    <p className="text-sm font-medium text-[#2B2B2B]">Are you bringing a guest?</p>
+                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Plus one</h2>
+                {!attending ? (
+                  <p className="text-[#2B2B2B]">No guest details needed — thank you for letting us know.</p>
+                ) : (
+                  <>
+                    <p className="mb-5 text-sm text-[#2B2B2B]">Are you bringing a guest?</p>
                     <ChoiceRow
                       options={["Yes", "No"]}
                       value={form.hasPlusOne === "yes" ? "Yes" : form.hasPlusOne === "no" ? "No" : ""}
                       onChange={(v) => update("hasPlusOne", v === "Yes" ? "yes" : "no")}
+                      columns={2}
                     />
                     {form.hasPlusOne === "yes" && (
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className="text-sm text-[#7C9AB0]" htmlFor="p1">
-                            Guest first name
-                          </label>
-                          <input
-                            id="p1"
-                            className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
-                            value={form.plusOneFirstName}
-                            onChange={(e) => update("plusOneFirstName", e.target.value)}
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm text-[#7C9AB0]" htmlFor="p2">
-                            Guest last name
-                          </label>
-                          <input
-                            id="p2"
-                            className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
-                            value={form.plusOneLastName}
-                            onChange={(e) => update("plusOneLastName", e.target.value)}
-                          />
-                        </div>
+                      <div className="mt-6">
+                        <label className="text-sm text-[#7C9AB0]" htmlFor="plusOneName">
+                          Guest name
+                        </label>
+                        <input
+                          id="plusOneName"
+                          className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                          value={form.plusOneName}
+                          onChange={(e) => update("plusOneName", e.target.value)}
+                        />
                       </div>
                     )}
-                  </div>
+                  </>
                 )}
               </>
             )}
 
             {step === 4 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-3">Accommodation</h2>
-                {!attending ? (
-                  <p className="text-[#2B2B2B]">We&apos;ll miss you — no accommodation is needed.</p>
-                ) : (
-                  <>
-                    <p className="mb-6 text-[#2B2B2B]">Would you like to stay at Castillo de Monda?</p>
-                    <ChoiceRow
-                      options={["Yes, at the castle", "No, I will stay elsewhere", "I am not sure yet"]}
-                      value={
-                        form.accommodation === "castle"
-                          ? "Yes, at the castle"
-                          : form.accommodation === "elsewhere"
-                            ? "No, I will stay elsewhere"
-                            : form.accommodation === "unsure"
-                              ? "I am not sure yet"
-                              : ""
-                      }
-                      onChange={(v) => {
-                        if (v.includes("castle")) update("accommodation", "castle");
-                        else if (v.includes("elsewhere")) update("accommodation", "elsewhere");
-                        else update("accommodation", "unsure");
-                      }}
-                    />
-                    {form.accommodation === "castle" && (
-                      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className="text-sm text-[#7C9AB0]">Room type</label>
-                          <select
-                            className="mt-2 w-full rounded-2xl border border-[#E8DFD3] bg-white px-4 py-3 text-[#2B2B2B]"
-                            value={form.roomType}
-                            onChange={(e) => update("roomType", e.target.value)}
-                          >
-                            <option>Double</option>
-                            <option>Twin</option>
-                            <option>Suite</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="text-sm text-[#7C9AB0]">Breakfast (€15 / person)</label>
-                          <ChoiceRow
-                            options={["Yes", "No"]}
-                            value={form.breakfast === "yes" ? "Yes" : form.breakfast === "no" ? "No" : ""}
-                            onChange={(v) => update("breakfast", v === "Yes" ? "yes" : "no")}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    <div className="mt-6 rounded-[20px] bg-[#E8DFD3] p-5 text-sm text-[#2B2B2B]">
-                      <strong>Important:</strong> The hotel will contact you directly to confirm your
-                      reservation. Submitting this form does not confirm a room. Payment is required at the
-                      time of reservation.
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-
-            {step === 5 && (
-              <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Transfers</h2>
-                {!attending ? (
-                  <p className="text-[#2B2B2B]">No transfer needed — thank you for letting us know.</p>
-                ) : (
-                  <>
-                    <p className="mb-5 text-sm text-[#2B2B2B]">
-                      Would you like to be grouped with other guests for an organised transfer (paid by
-                      guests)?
-                    </p>
-                    <ChoiceRow
-                      options={["Yes, please", "No, thanks", "Maybe — contact me later"]}
-                      value={
-                        form.transfer === "yes"
-                          ? "Yes, please"
-                          : form.transfer === "no"
-                            ? "No, thanks"
-                            : form.transfer === "maybe"
-                              ? "Maybe — contact me later"
-                              : ""
-                      }
-                      onChange={(v) => {
-                        if (v.startsWith("Yes")) update("transfer", "yes");
-                        else if (v.startsWith("No")) update("transfer", "no");
-                        else update("transfer", "maybe");
-                      }}
-                    />
-                    <p className="mt-4 text-xs text-[#7C9AB0]">
-                      Up to 4 people: €95 total · Up to 7 people: €100–€110 total.
-                    </p>
-                  </>
-                )}
-              </>
-            )}
-
-            {step === 6 && (
-              <>
                 <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Welcome dinner</h2>
                 {!attending ? (
-                  <p className="text-[#2B2B2B]">We hope to see you another time.</p>
+                  <p className="text-[#2B2B2B]">We hope to celebrate with you another time.</p>
                 ) : (
                   <>
                     <p className="mb-5 text-sm text-[#2B2B2B]">
                       We may host a welcome gathering before the wedding. Will you join?
                     </p>
                     <ChoiceRow
-                      options={["Yes", "No", "Not sure yet"]}
+                      options={["Yes", "No", "Not sure"]}
                       value={
                         form.welcomeDinner === "yes"
                           ? "Yes"
                           : form.welcomeDinner === "no"
                             ? "No"
                             : form.welcomeDinner === "maybe"
-                              ? "Not sure yet"
+                              ? "Not sure"
                               : ""
                       }
                       onChange={(v) => {
@@ -473,7 +415,7 @@ export function RSVP() {
                     />
                     <div className="mt-6">
                       <label className="text-sm text-[#7C9AB0]" htmlFor="wg">
-                        How many in your party (including you)? Optional estimate.
+                        Guest count estimate (optional, including you)
                       </label>
                       <input
                         id="wg"
@@ -489,50 +431,185 @@ export function RSVP() {
               </>
             )}
 
+            {step === 5 && (
+              <>
+                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Accommodation</h2>
+                {!attending ? (
+                  <p className="text-[#2B2B2B]">No accommodation needed.</p>
+                ) : (
+                  <>
+                    <p className="mb-5 text-sm text-[#2B2B2B]">Would you like to stay at Castillo de Monda?</p>
+                    <ChoiceRow
+                      options={["Yes", "No", "Maybe"]}
+                      value={
+                        form.stayAtCastle === "yes"
+                          ? "Yes"
+                          : form.stayAtCastle === "no"
+                            ? "No"
+                            : form.stayAtCastle === "maybe"
+                              ? "Maybe"
+                              : ""
+                      }
+                      onChange={(v) => {
+                        if (v === "Yes") update("stayAtCastle", "yes");
+                        else if (v === "No") update("stayAtCastle", "no");
+                        else update("stayAtCastle", "maybe");
+                      }}
+                    />
+                    {(form.stayAtCastle === "yes" || form.stayAtCastle === "maybe") && (
+                      <div className="mt-6 space-y-4">
+                        <div>
+                          <label className="text-sm text-[#7C9AB0]">Room type (optional)</label>
+                          <select
+                            className="mt-2 w-full rounded-2xl border border-[#E8DFD3] bg-white px-4 py-3"
+                            value={form.roomType}
+                            onChange={(e) => update("roomType", e.target.value)}
+                          >
+                            <option value="">Prefer not to say</option>
+                            <option value="Double">Double</option>
+                            <option value="Twin">Twin</option>
+                            <option value="Suite">Suite</option>
+                          </select>
+                        </div>
+                        <div>
+                          <p className="text-sm text-[#7C9AB0] mb-2">Breakfast (€15 per person)</p>
+                          <ChoiceRow
+                            options={["Yes", "No"]}
+                            value={form.breakfast === "yes" ? "Yes" : form.breakfast === "no" ? "No" : ""}
+                            onChange={(v) => update("breakfast", v === "Yes" ? "yes" : "no")}
+                            columns={2}
+                          />
+                        </div>
+                      </div>
+                    )}
+                    <div className="mt-6 rounded-[20px] bg-[#E8DFD3] p-5 text-sm text-[#2B2B2B]">
+                      <p className="font-semibold text-[#2F4A6D] mb-2">Important</p>
+                      <ul className="list-disc space-y-1 pl-5">
+                        <li>The hotel will contact you directly.</li>
+                        <li>This form does NOT confirm your reservation.</li>
+                        <li>Payment is required at booking.</li>
+                      </ul>
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {step === 6 && (
+              <>
+                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Transport</h2>
+                {!attending ? (
+                  <p className="text-[#2B2B2B]">No transfer needed.</p>
+                ) : (
+                  <>
+                    <p className="mb-5 text-sm text-[#2B2B2B]">Do you need an organised transfer?</p>
+                    <ChoiceRow
+                      options={["Yes", "No", "Maybe"]}
+                      value={
+                        form.transfer === "yes"
+                          ? "Yes"
+                          : form.transfer === "no"
+                            ? "No"
+                            : form.transfer === "maybe"
+                              ? "Maybe"
+                              : ""
+                      }
+                      onChange={(v) => {
+                        if (v === "Yes") update("transfer", "yes");
+                        else if (v === "No") update("transfer", "no");
+                        else update("transfer", "maybe");
+                      }}
+                    />
+                    <p className="mt-4 text-xs text-[#7C9AB0]">
+                      Up to 4 people: €95 total · Up to 7 people: €100–€110 total (paid by guests).
+                    </p>
+                  </>
+                )}
+              </>
+            )}
+
             {step === 7 && (
+              <>
+                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Dietary (light)</h2>
+                <p className="mb-4 text-sm text-[#2B2B2B]">
+                  Optional. You&apos;ll confirm details again in the February logistics form.
+                </p>
+                <label className="text-sm text-[#7C9AB0]" htmlFor="dietary">
+                  Restrictions or allergies
+                </label>
+                <textarea
+                  id="dietary"
+                  rows={4}
+                  className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                  value={form.dietary}
+                  onChange={(e) => update("dietary", e.target.value)}
+                  placeholder="Leave blank if none"
+                />
+              </>
+            )}
+
+            {step === 8 && (
               <>
                 <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-3">Review</h2>
                 <dl className="space-y-3 text-sm text-[#2B2B2B]">
                   <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                    <dt className="text-[#7C9AB0]">Attendance</dt>
-                    <dd className="text-right font-medium">{form.attendance || "—"}</dd>
-                  </div>
-                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
                     <dt className="text-[#7C9AB0]">Name</dt>
-                    <dd className="text-right font-medium">
-                      {form.firstName} {form.lastName}
-                    </dd>
+                    <dd className="text-right font-medium">{form.fullName || "—"}</dd>
                   </div>
                   <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
                     <dt className="text-[#7C9AB0]">Email</dt>
                     <dd className="text-right font-medium break-all">{form.email || "—"}</dd>
                   </div>
+                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
+                    <dt className="text-[#7C9AB0]">Phone</dt>
+                    <dd className="text-right font-medium">{form.phone || "—"}</dd>
+                  </div>
+                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
+                    <dt className="text-[#7C9AB0]">Attendance</dt>
+                    <dd className="text-right font-medium">{form.attendance || "—"}</dd>
+                  </div>
                   {attending && (
                     <>
                       <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                        <dt className="text-[#7C9AB0]">Guest</dt>
+                        <dt className="text-[#7C9AB0]">Plus one</dt>
                         <dd className="text-right font-medium">
                           {form.hasPlusOne === "yes"
-                            ? `${form.plusOneFirstName} ${form.plusOneLastName}`.trim() || "—"
+                            ? form.plusOneName || "—"
                             : form.hasPlusOne === "no"
                               ? "No"
                               : "—"}
                         </dd>
                       </div>
                       <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                        <dt className="text-[#7C9AB0]">Accommodation</dt>
-                        <dd className="text-right font-medium">{form.accommodation || "—"}</dd>
+                        <dt className="text-[#7C9AB0]">Welcome dinner</dt>
+                        <dd className="text-right font-medium">{form.welcomeDinner || "—"}</dd>
                       </div>
+                      <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
+                        <dt className="text-[#7C9AB0]">Castle stay</dt>
+                        <dd className="text-right font-medium">{form.stayAtCastle || "—"}</dd>
+                      </div>
+                      {(form.stayAtCastle === "yes" || form.stayAtCastle === "maybe") && (
+                        <>
+                          <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
+                            <dt className="text-[#7C9AB0]">Room type</dt>
+                            <dd className="text-right font-medium">{form.roomType || "—"}</dd>
+                          </div>
+                          <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
+                            <dt className="text-[#7C9AB0]">Breakfast</dt>
+                            <dd className="text-right font-medium">{form.breakfast || "—"}</dd>
+                          </div>
+                        </>
+                      )}
                       <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
                         <dt className="text-[#7C9AB0]">Transfer</dt>
                         <dd className="text-right font-medium">{form.transfer || "—"}</dd>
                       </div>
-                      <div className="flex justify-between gap-4 pb-2">
-                        <dt className="text-[#7C9AB0]">Welcome dinner</dt>
-                        <dd className="text-right font-medium">{form.welcomeDinner || "—"}</dd>
-                      </div>
                     </>
                   )}
+                  <div className="flex justify-between gap-4 pb-2">
+                    <dt className="text-[#7C9AB0]">Dietary</dt>
+                    <dd className="text-right font-medium max-w-[60%]">{form.dietary.trim() || "—"}</dd>
+                  </div>
                 </dl>
               </>
             )}
@@ -547,11 +624,7 @@ export function RSVP() {
                 Back
               </button>
               {step < TOTAL_STEPS ? (
-                <button
-                  type="button"
-                  onClick={next}
-                  className="rounded-full bg-[#2F4A6D] px-6 py-3 text-white"
-                >
+                <button type="button" onClick={next} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-white">
                   Continue
                 </button>
               ) : (
