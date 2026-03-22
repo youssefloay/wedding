@@ -306,6 +306,18 @@ npm run dev
 npm run build
 ```
 
+**Local dev URL:** the app uses `base: /wedding/` for GitHub Pages. Open **http://localhost:5173/wedding/** (not the site root).
+
+### GitHub Pages (fix blank site)
+
+Deploying **`main` / (root)** serves raw source: the browser loads `/src/main.tsx`, which does not run in production → **blank page**.
+
+1. In the repo go to **Settings → Pages → Build and deployment**.  
+2. Under **Source**, choose **GitHub Actions** (not “Deploy from a branch”).  
+3. Push the workflow in `.github/workflows/deploy-github-pages.yml`; it builds with Vite and publishes **`dist`** (with `base: /wedding/` and a `404.html` copy for client-side routes).
+
+After the workflow succeeds, the site at [https://youssefloay.github.io/wedding/](https://youssefloay.github.io/wedding/) should load the built app.
+
 **Extra routes (not in main nav):**
 
 - **`/logistics`** — Form 2 (logistics / February 2027).  
