@@ -303,10 +303,21 @@ Rough audit against the master spec:
 ```bash
 npm install
 npm run dev
-npm run build
+npm run build        # production bundle (no separate tsc — avoids missing `tsc` in Docker)
+npm run typecheck    # optional: TypeScript check (needs devDependencies)
 ```
 
-**Local dev URL:** the app uses `base: /wedding/` for GitHub Pages. Open **http://localhost:5173/wedding/** (not the site root).
+**Local dev URL:** default `base` is `/wedding/` (GitHub Pages). Open **http://localhost:5173/wedding/** (not the site root).
+
+### Docker / Shipit / `tsc: not found`
+
+Some deploy pipelines run **`npm ci --omit=dev`**, which skips **TypeScript** — so **`tsc: not found`** when the build script called `tsc -b`.
+
+- **`npm run build`** is now **`vite build` only** (Vite transpiles TS). **Vite**, **@vitejs/plugin-react**, and **@tailwindcss/vite** are in **`dependencies`** so a production-only install can still build.
+- **`npm run typecheck`** runs **`tsc -b`** in CI (full `npm ci`) for type safety.
+
+**Image in this repo:** `Dockerfile` builds with **`VITE_BASE=/`** (nginx serves the app at the container root). Override at build time:  
+`docker build --build-arg VITE_BASE=/wedding/ -t wedding .` if you serve under a subpath.
 
 ### GitHub Pages (fix blank site)
 
