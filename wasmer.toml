@@ -1,0 +1,14 @@
+# Wasmer Edge — https://wasmer.io / https://docs.wasmer.io/edge/guides/react-static-site
+# Replace the package name with <your-wasmer-username>/<unique-package-name>
+[package]
+name = "youssefloay/wedding"
+version = "0.1.0"
+description = "Álvaro & Lama — wedding website (static)"
+license = "MIT"
+
+[dependencies]
+"sharrattj/static-web-server" = "1"
+
+[fs]
+public = "dist"
+"/settings" = "settings"

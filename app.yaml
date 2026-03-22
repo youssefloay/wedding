@@ -1,0 +1,12 @@
+# Wasmer Edge app — https://docs.wasmer.io/edge/configuration/
+# Edit `owner` / `name` / `package` to match your Wasmer account and wasmer.toml [package].name
+# After the first successful deploy, Wasmer may add fields (e.g. app_id); keep them.
+
+kind: wasmer.io/App.v0
+owner: youssefloay
+name: wedding
+package: youssefloay/wedding
+
+env:
+  # Load SPA settings (page-fallback) from the mounted /settings volume
+  SERVER_CONFIG_FILE: "/settings/config.toml"

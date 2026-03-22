@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:wasmer": "VITE_BASE=/ npm run build",
     "typecheck": "tsc -b",
     "preview": "vite preview"
   },

@@ -334,6 +334,20 @@ After the workflow succeeds, the site at [https://youssefloay.github.io/wedding/
 - **`/logistics`** — Form 2 (logistics / February 2027).  
 - **`/export`** — Download all saved RSVPs + logistics as CSV (uses **localStorage** in this demo — replace with a secured admin + database before production).
 
+### Wasmer Edge ([wasmer.io](https://wasmer.io))
+
+Deploy the **built** site to [Wasmer Edge](https://docs.wasmer.io/edge/get-started) (similar idea to the official [React static site](https://docs.wasmer.io/edge/guides/react-static-site) guide).
+
+1. Install the [Wasmer CLI](https://docs.wasmer.io/install) and run **`wasmer login`**.  
+2. In **`wasmer.toml`**, set **`[package].name`** to **`<your-username>/<package>`** (must match the registry). Do the same for **`app.yaml`** (`owner`, `name`, `package`).  
+3. Build for a **root URL** (Edge apps use `https://<app>.wasmer.app/`, not `/wedding/`):  
+   **`npm run build:wasmer`**  
+4. From the repo root: **`wasmer deploy`**  
+
+`[fs] public = "dist"` ships the Vite output. **`settings/config.toml`** turns on **`page-fallback`** so React Router works on refresh. **`app.yaml`** sets **`SERVER_CONFIG_FILE=/settings/config.toml`** so the static server loads that file.
+
+If **`app.yaml`** format errors appear, run **`wasmer app create --template static-site`** once, then align **`wasmer.toml`** (`public = "dist"`) and merge the **`env`** block from this repo’s **`app.yaml`**.
+
 ---
 
 ## Optional: original UI mock

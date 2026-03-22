@@ -1,0 +1,14 @@
+# Static Web Server — https://static-web-server.net/configuration/config-file/
+# Mounted at /settings; root matches [fs] public → /public in the Edge package.
+
+[general]
+host = "::"
+port = 8080
+root = "/public"
+log-level = "error"
+compression = true
+cache-control-headers = true
+directory-listing = false
+
+# React Router: unknown paths return index.html (200) so client routing works
+page-fallback = "./index.html"
