@@ -2,70 +2,74 @@ import { Link } from "react-router-dom";
 
 export function Home() {
   return (
-    <div className="flex-1 flex flex-col items-center justify-start pt-[140px] pb-12 px-5 text-center">
+    <div className="flex-1 flex flex-col items-center justify-start pt-[190px] pb-12 px-5 text-center">
       <div className="flex flex-col items-center w-full max-w-sm mx-auto select-none">
         
         {/* Top Date & Location */}
-        <div className="font-serif text-[#5c4b3a] text-[15px] leading-snug mb-2 opacity-90">
+        <div className="font-serif text-[#3b3228] text-[16px] leading-[1.4] mb-4">
           <p>Álvaro &amp; Lama,</p>
           <p>17 April 2027 &bull; Monda</p>
         </div>
 
         {/* Main Cursive Title */}
-        <h1 className="font-script text-[84px] text-[#b27d53] leading-[0.8] mb-12 drop-shadow-[0_2px_4px_rgba(120,80,50,0.1)] font-normal">
+        <h1 className="font-script text-[84px] text-[#9a4532] leading-[0.7] mb-12 font-normal">
           Alvaro &amp; Lama
         </h1>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-center gap-3 w-full px-4 mb-14">
+        {/* Action Buttons (Flat Vintage Rectangles) */}
+        <div className="flex items-center justify-center gap-3 w-full px-2 mb-10">
           <Link
             to="/rsvp"
-            className="flex-1 rounded-[10px] bg-gradient-to-b from-[#cf7755] to-[#a65134] text-white py-2.5 text-[15px] font-serif tracking-widest shadow-[0_6px_14px_rgba(166,81,52,0.3),inset_0_1px_2px_rgba(255,255,255,0.4)] [text-shadow:0_1px_1px_rgba(0,0,0,0.2)] hover:from-[#ba6043] hover:to-[#99472e] transition-all"
+            className="flex-1 rounded-[6px] bg-[#a65335] text-white py-3 text-[17px] font-serif font-bold tracking-wide shadow-[0_4px_8px_rgba(120,60,40,0.3)] hover:bg-[#8f452a] transition-all"
           >
             RSVP
           </Link>
           <Link
             to="/wedding"
-            className="flex-1 rounded-[10px] border border-[#d2c7ba] bg-[#FAF7F0]/40 backdrop-blur-sm text-[#6F5244] py-2.5 text-[15px] font-serif shadow-[0_4px_10px_rgba(0,0,0,0.04),inset_0_1px_1px_rgba(255,255,255,1)] hover:bg-[#FAF7F0]/60 transition-all"
+            className="flex-1 rounded-[6px] border-[1.5px] border-[#d3c6ba] bg-[#efe8de] text-[#5c4a3d] py-3 text-[17px] font-serif shadow-[0_4px_8px_rgba(150,140,130,0.2)] hover:bg-[#e6dcd0] transition-all"
           >
             View Details
           </Link>
         </div>
 
-        {/* Blended Glassy Cream Card */}
-        <div className="w-full bg-[#FAF7F0]/40 backdrop-blur-[12px] border border-white/60 rounded-[16px] p-7 pb-9 mb-10 shadow-[0_8px_32px_rgba(100,70,50,0.08),inset_0_1px_1px_rgba(255,255,255,0.8)] relative overflow-hidden">
-          <h2 className="font-serif italic text-[24px] text-[#4f4339] mb-4 tracking-tight">
+        {/* Solid Vintage Paper Card */}
+        <div className="w-full bg-[#f4ebd9] border-[1.5px] border-[#d4c8bc] rounded-[6px] p-6 pb-8 mb-8 shadow-[0_8px_16px_rgba(110,95,80,0.15)] relative overflow-hidden">
+          <h2 className="font-serif italic text-[24px] text-[#2c241c] mb-4 tracking-tight">
             Stay at Castillo de Monda
           </h2>
-          <div className="flex items-center justify-center w-full mb-4 opacity-50">
-            <div className="h-[0.5px] bg-[#DCD3C6] w-[40px]"></div>
+          
+          <div className="flex justify-center mb-5">
+            <div className="h-[1px] bg-[#d3c6ba] w-[80%]"></div>
           </div>
-          <p className="text-[#5e5248] text-[16px] font-serif leading-relaxed mb-8 px-2 tracking-wide">
+          
+          <p className="text-[#3b3228] text-[15px] font-serif leading-relaxed mb-6 px-1">
             For the best experience, we recommend<br />staying at the venue.
           </p>
           <Link
             to="/rsvp"
-            className="inline-block rounded-full bg-gradient-to-b from-[#c3ab8e] to-[#a38766] text-white px-8 py-[10px] text-[15px] font-sans font-medium shadow-[0_6px_16px_rgba(150,120,90,0.3),inset_0_1px_2px_rgba(255,255,255,0.4)] hover:from-[#B59C7F] hover:to-[#9C8060] transition-all"
+            className="inline-block rounded-full border border-[#967d5e] bg-[#aa8a63] text-white px-8 py-3 text-[15px] font-sans font-medium shadow-[0_6px_10px_rgba(120,100,70,0.3)] hover:bg-[#967853] transition-all"
           >
             Request a room in RSVP
           </Link>
         </div>
 
-        {/* Decorative Delicate Divider */}
-        <div className="flex items-center justify-center gap-3 w-32 mb-8">
-          <div className="h-[0.5px] bg-[#DCD3C6] flex-1"></div>
-          <div className="w-[5px] h-[5px] rotate-45 bg-[#DCD3C6]"></div>
-          <div className="h-[0.5px] bg-[#DCD3C6] flex-1"></div>
-        </div>
-
         {/* Wedding Flow */}
-        <div className="w-full">
-          <h2 className="font-serif text-[26px] text-[#4f4339] mb-4 tracking-tight">
-            Wedding Flow
-          </h2>
-          <div className="text-[#5e5248] font-serif text-[17px] leading-loose opacity-95 tracking-wide">
+        <div className="w-full mt-2">
+          
+          <div className="flex items-center justify-center gap-3 w-full mb-6">
+            <div className="h-[1px] bg-[#9a8c7e] w-12 opacity-50"></div>
+            <h2 className="font-serif text-[24px] text-[#3b3228] tracking-tight">
+              Wedding Flow
+            </h2>
+            <div className="h-[1px] bg-[#9a8c7e] w-12 opacity-50"></div>
+          </div>
+
+          <div className="text-[#3b3228] font-serif text-[16px] leading-loose tracking-wide">
             <p>&bull; Arrival &rarr; Ceremony &rarr; Cocktail &rarr;</p>
-            <p className="pl-6">&rarr; Party <span className="text-xl inline-block ml-1" style={{ transform: "rotate(15deg)" }}>🎉</span></p>
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <div className="h-[1px] bg-[#9a8c7e] w-16 opacity-40"></div>
+              <p>&rarr; Party <span className="text-lg inline-block ml-1">🍹</span></p>
+            </div>
           </div>
         </div>
 
