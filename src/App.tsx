@@ -12,9 +12,9 @@ import { FAQ } from "./pages/FAQ";
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-[100dvh] flex flex-col w-full">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 flex flex-col w-full relative z-10 pb-24 md:pb-32">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/wedding" element={<Wedding />} />
@@ -26,7 +26,9 @@ export default function App() {
           <Route path="/faq" element={<FAQ />} />
         </Routes>
       </main>
-      <Footer />
+      <div className="relative z-10 pb-20 md:pb-24">
+        <Footer />
+      </div>
     </div>
   );
 }
