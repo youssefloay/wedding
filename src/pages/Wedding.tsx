@@ -1,66 +1,109 @@
-const timeline = [
-  ["16:30", "Arrival"],
-  ["17:00", "Ceremony"],
-  ["18:00", "Cocktail"],
-  ["20:00", "Dinner"],
-  ["22:30", "Party"],
-] as const;
-
 export function Wedding() {
   return (
-    <div className="py-16 sm:py-20 px-6">
-      <div className="mx-auto max-w-4xl text-center mb-10">
-        <p className="font-sans text-[10px] tracking-[0.25em] font-medium text-[#7d6c5b] uppercase mb-2">
-          Itinerary
+    <div className="py-[140px] px-5 text-center">
+      <div className="mx-auto max-w-sm flex flex-col items-center">
+        
+        {/* Main Cursive Title */}
+        <h1 className="font-script text-[84px] text-[#b27d53] leading-[0.8] mb-10 drop-shadow-[0_2px_4px_rgba(120,80,50,0.1)] font-normal">
+          The Wedding
+        </h1>
+        
+        {/* Subtitle */}
+        <p className="font-serif text-[#5e5248] text-[15px] leading-snug mb-12 opacity-90">
+          Álvaro &amp; Lama &bull; 17 April 2027 &bull; Monda
         </p>
-        <h1 className="font-serif text-4xl text-[#4a3f35] sm:text-5xl italic">Wedding Details</h1>
-      </div>
 
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-8 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-[24px] bg-[#F6F1E6]/70 backdrop-blur-md border border-[#8b7967]/20 p-6 sm:p-8 shadow-sm">
-            <p className="mb-2 text-[10px] uppercase tracking-[0.25em] font-medium text-[#8b7967]">
-              Venue
-            </p>
-            <h2 className="font-serif text-3xl text-[#4a3f35] sm:text-4xl mb-4">Castillo de Monda</h2>
-            <p className="text-sm text-[#5c4e40] leading-relaxed">
-              Castillo de Monda is a historic Andalusian castle nestled in the mountains near Marbella,
-              offering breathtaking views and a unique blend of Spanish and Moorish heritage.
-            </p>
+        {/* Blended Glassy Cream Card */}
+        <div className="w-full bg-[#FAF7F0]/40 backdrop-blur-[12px] border border-white/60 rounded-[16px] p-7 pb-9 mb-8 shadow-[0_8px_32px_rgba(100,70,50,0.08),inset_0_1px_1px_rgba(255,255,255,0.8)] flex flex-col items-center relative overflow-hidden">
+          
+          <div className="text-4xl mb-4 opacity-80" role="img" aria-label="Castle">
+            🏰
           </div>
-          <div className="rounded-[24px] bg-[#F6F1E6]/70 backdrop-blur-md border border-[#8b7967]/20 p-6 sm:p-8 flex flex-col justify-center shadow-sm">
-            <div className="font-serif italic text-2xl text-[#7d6c5b] mb-1">Saturday</div>
-            <div className="text-2xl font-serif text-[#4a3f35] uppercase tracking-widest">17 Apr</div>
-            <div className="text-[12px] font-sans tracking-[0.4em] text-[#5c4e40] mt-1">2027</div>
+          
+          <h2 className="font-serif italic text-[28px] text-[#4f4339] mb-4 tracking-tight">
+            Castillo de Monda
+          </h2>
+          
+          {/* Decorative Delicate Divider */}
+          <div className="flex items-center justify-center gap-3 w-40 mb-6">
+            <div className="h-[0.5px] bg-[#DCD3C6] flex-1"></div>
+            <div className="w-[5px] h-[5px] rotate-45 bg-[#DCD3C6]"></div>
+            <div className="h-[0.5px] bg-[#DCD3C6] flex-1"></div>
           </div>
+
+          <p className="text-[#5e5248] text-[15px] font-serif leading-relaxed mb-8 px-4">
+            Camino Humilladero, 29110 Monda, Málaga
+          </p>
+
+          <a
+            href="https://maps.apple.com/?address=Camino+Humilladero,29110+Monda,Malaga,Spain"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex flex-row items-center justify-center gap-2 rounded-[10px] border border-[#d2c7ba] bg-[#FAF7F0]/40 backdrop-blur-sm text-[#6F5244] px-8 py-3 text-[14px] font-sans font-medium shadow-[0_4px_10px_rgba(0,0,0,0.04),inset_0_1px_1px_rgba(255,255,255,1)] hover:bg-[#FAF7F0]/60 transition-all w-full sm:w-auto"
+          >
+            <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            Open in Maps
+          </a>
         </div>
 
-        <div className="mb-8">
-          <h2 className="font-serif italic text-2xl text-[#7d6c5b] mb-4 text-center">Schedule</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
-            {timeline.map(([time, label]) => (
-              <div key={time} className="rounded-[20px] bg-[#F6F1E6]/80 backdrop-blur-md border border-[#8b7967]/20 p-4 text-center shadow-sm hover:bg-[#F6F1E6]/90 transition-colors">
-                <div className="text-[11px] font-sans tracking-widest text-[#8b7967]">{time}</div>
-                <div className="mt-1 font-serif text-[15px] text-[#4a3f35]">{label}</div>
-              </div>
-            ))}
+        {/* Timeline */}
+        <div className="w-full text-left font-serif text-[#4a3f35] px-2 mb-10">
+          
+          <div className="flex flex-row items-center border-b border-[#DCD3C6]/60 py-4">
+            <span className="w-[72px] uppercase tracking-widest font-sans font-medium text-[11px] text-[#AF7F5D]">
+              Arrival
+            </span>
+            <span className="font-medium text-[15px] mr-5 text-[#4a3f35]">15:00</span>
+            <span className="flex-1 border-l border-[#DCD3C6] pl-5 text-[#5c4b3a] text-[16px]">
+              Guests start gathering
+            </span>
           </div>
+
+          <div className="flex flex-row items-center border-b border-[#DCD3C6]/60 py-4">
+            <span className="w-[72px] uppercase tracking-widest font-sans font-medium text-[11px] text-[#AF7F5D]">
+              Ceremony
+            </span>
+            <span className="font-medium text-[15px] mr-5 text-[#4a3f35]">17:00</span>
+            <span className="flex-1 border-l border-[#DCD3C6] pl-5 text-[#5c4b3a] text-[16px]">
+              The spark begins 🔥
+            </span>
+          </div>
+
+          <div className="flex flex-row items-center border-b border-[#DCD3C6]/60 py-4">
+            <span className="w-[72px] uppercase tracking-widest font-sans font-medium text-[11px] text-[#AF7F5D]">
+              Cocktail
+            </span>
+            <span className="font-medium text-[15px] mr-5 text-[#4a3f35]">17:30</span>
+            <span className="flex-1 border-l border-[#DCD3C6] pl-5 text-[#5c4b3a] text-[16px]">
+              Tapas &amp; drinks 🍸
+            </span>
+          </div>
+
+          <div className="flex flex-row items-center border-b border-[#DCD3C6]/60 py-4">
+            <span className="w-[72px] uppercase tracking-widest font-sans font-medium text-[11px] text-[#AF7F5D]">
+              Dinner
+            </span>
+            <span className="font-medium text-[15px] mr-5 text-[#4a3f35]">19:00</span>
+            <span className="flex-1 border-l border-[#DCD3C6] pl-5 text-[#5c4b3a] text-[16px]">
+              Celebrate with us
+            </span>
+          </div>
+
+          <div className="flex flex-row items-center py-4">
+            <span className="w-[72px] uppercase tracking-widest font-sans font-medium text-[11px] text-[#AF7F5D]">
+              Party
+            </span>
+            <span className="font-medium text-[15px] mr-5 text-[#4a3f35]">21:00</span>
+            <span className="flex-1 border-l border-[#DCD3C6] pl-5 text-[#5c4b3a] text-[16px]">
+              Let's dance! 🎵
+            </span>
+          </div>
+
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[22px] bg-[#F6F1E6]/60 backdrop-blur-md border border-[#8b7967]/20 p-6 shadow-sm">
-            <h2 className="font-serif italic text-xl text-[#7d6c5b] mb-3">Weather</h2>
-            <p className="text-[#5c4e40] text-sm leading-relaxed">
-              18–21°C daytime · 10–13°C evening.<br/>Bring a light layer.
-            </p>
-          </div>
-          <div className="rounded-[22px] bg-[#F6F1E6]/60 backdrop-blur-md border border-[#8b7967]/20 p-6 shadow-sm">
-            <h2 className="font-serif italic text-xl text-[#7d6c5b] mb-3">Dress code</h2>
-            <p className="text-[#5c4e40] text-sm leading-relaxed">
-              Elegant / formal.<br/>Outdoor-friendly shoes recommended.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );
