@@ -32,25 +32,28 @@ export function Home() {
           </Link>
         </div>
 
-        {/* Solid Vintage Paper Card */}
-        <div className="w-full bg-[#f4ebd9] border-[1.5px] border-[#d4c8bc] rounded-[6px] p-6 pb-8 mb-8 shadow-[0_8px_16px_rgba(110,95,80,0.15)] relative overflow-hidden">
-          <h2 className="font-serif italic text-[24px] text-[#2c241c] mb-4 tracking-tight">
-            Stay at Castillo de Monda
-          </h2>
-          
-          <div className="flex justify-center mb-5">
-            <div className="h-[1px] bg-[#d3c6ba] w-[80%]"></div>
+        {/* Solid Vintage Paper Card with Oranges */}
+        <div className="w-full bg-[#f4ebd9] bg-[url('/card-bg-oranges.jpg')] bg-cover bg-center bg-no-repeat border-[1.5px] border-[#d4c8bc] rounded-[6px] p-6 pb-8 mb-8 shadow-[0_8px_16px_rgba(110,95,80,0.15)] relative overflow-hidden">
+          <div className="absolute inset-0 bg-white/20"></div> {/* subtle lightening to ensure text readability */}
+          <div className="relative z-10">
+            <h2 className="font-serif italic text-[24px] text-[#2c241c] mb-4 tracking-tight">
+              Stay at Castillo de Monda
+            </h2>
+            
+            <div className="flex justify-center mb-5">
+              <div className="h-[1px] bg-[#d3c6ba] w-[80%]"></div>
+            </div>
+            
+            <p className="text-[#3b3228] text-[15px] font-serif leading-relaxed mb-6 px-1">
+              For the best experience, we recommend<br />staying at the venue.
+            </p>
+            <Link
+              to="/rsvp"
+              className="inline-block rounded-full border border-[#967d5e] bg-[#aa8a63] text-white px-8 py-3 text-[15px] font-sans font-medium shadow-[0_6px_10px_rgba(120,100,70,0.3)] hover:bg-[#967853] transition-all"
+            >
+              Request a room in RSVP
+            </Link>
           </div>
-          
-          <p className="text-[#3b3228] text-[15px] font-serif leading-relaxed mb-6 px-1">
-            For the best experience, we recommend<br />staying at the venue.
-          </p>
-          <Link
-            to="/rsvp"
-            className="inline-block rounded-full border border-[#967d5e] bg-[#aa8a63] text-white px-8 py-3 text-[15px] font-sans font-medium shadow-[0_6px_10px_rgba(120,100,70,0.3)] hover:bg-[#967853] transition-all"
-          >
-            Request a room in RSVP
-          </Link>
         </div>
 
         {/* Wedding Flow */}

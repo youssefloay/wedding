@@ -13,38 +13,40 @@ export function Wedding() {
           Álvaro &amp; Lama &bull; 17 April 2027 &bull; Monda
         </p>
 
-        {/* Solid Vintage Paper Card */}
-        <div className="w-full bg-[#f4ebd9] border-[1.5px] border-[#d4c8bc] rounded-[6px] p-6 pb-8 mb-8 shadow-[0_8px_16px_rgba(110,95,80,0.15)] flex flex-col items-center relative overflow-hidden">
-          
-          <div className="text-4xl mb-4 opacity-80" role="img" aria-label="Castle">
-            🏰
-          </div>
-          
-          <h2 className="font-serif italic text-[26px] text-[#2c241c] mb-4 tracking-tight">
-            Castillo de Monda
-          </h2>
-          
-          {/* Decorative Delicate Divider */}
-          <div className="flex justify-center mb-5 w-full">
-            <div className="h-[1px] bg-[#d3c6ba] w-[60%]"></div>
-          </div>
+        {/* Solid Vintage Paper Card with Oranges */}
+        <div className="w-full bg-[#f4ebd9] bg-[url('/card-bg-oranges.jpg')] bg-cover bg-center bg-no-repeat border-[1.5px] border-[#d4c8bc] rounded-[6px] p-6 pb-8 mb-8 shadow-[0_8px_16px_rgba(110,95,80,0.15)] flex flex-col items-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-white/20"></div> {/* subtle lightening overlay */}
+          <div className="relative z-10 flex flex-col items-center w-full">
+            <div className="text-4xl mb-4 opacity-80" role="img" aria-label="Castle">
+              🏰
+            </div>
+            
+            <h2 className="font-serif italic text-[26px] text-[#2c241c] mb-4 tracking-tight">
+              Castillo de Monda
+            </h2>
+            
+            {/* Decorative Delicate Divider */}
+            <div className="flex justify-center mb-5 w-full">
+              <div className="h-[1px] bg-[#d3c6ba] w-[60%]"></div>
+            </div>
 
-          <p className="text-[#3b3228] text-[15px] font-serif leading-relaxed mb-8 px-4">
-            Camino Humilladero, 29110 Monda, Málaga
-          </p>
+            <p className="text-[#3b3228] text-[15px] font-serif leading-relaxed mb-8 px-4 font-medium">
+              Camino Humilladero, 29110 Monda, Málaga
+            </p>
 
-          <a
-            href="https://maps.apple.com/?address=Camino+Humilladero,29110+Monda,Malaga,Spain"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex flex-row items-center justify-center gap-2 rounded-[6px] border-[1.5px] border-[#d3c6ba] bg-[#efe8de] text-[#5c4a3d] px-8 py-3 text-[15px] font-serif shadow-[0_4px_8px_rgba(150,140,130,0.2)] hover:bg-[#e6dcd0] transition-all w-full sm:w-auto"
-          >
-            <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            Open in Maps
-          </a>
+            <a
+              href="https://maps.apple.com/?address=Camino+Humilladero,29110+Monda,Malaga,Spain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex flex-row items-center justify-center gap-2 rounded-[6px] border-[1.5px] border-[#d3c6ba] bg-[#efe8de] text-[#5c4a3d] px-8 py-3 text-[15px] font-serif shadow-[0_4px_8px_rgba(150,140,130,0.2)] hover:bg-[#e6dcd0] transition-all w-full sm:w-auto"
+            >
+              <svg className="w-4 h-4 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Open in Maps
+            </a>
+          </div>
         </div>
 
         {/* Timeline */}
