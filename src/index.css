@@ -13,20 +13,10 @@
     @apply font-sans text-[#4A3F35] bg-transparent flex flex-col items-center w-full;
   }
   #root {
-    @apply min-h-[100dvh] w-full flex flex-col relative;
-  }
-  main {
-    @apply flex-1 w-full relative;
-    background-image: url('/backg.svg');
-    background-position: top center;
+    @apply min-h-[100dvh] w-full flex flex-col relative bg-[#F6F1E6];
+    background-image: url('/background.png');
     background-repeat: no-repeat;
-    background-size: 100% auto;
-  }
-
-  @media (min-width: 768px) {
-    main {
-      background-size: 100% auto;
-      background-position: top center;
-    }
+    /* Stretch the abstract watercolor canvas across the entire height of the document so it never repeats and never stops short */
+    background-size: 100% 100%;
   }
 }
