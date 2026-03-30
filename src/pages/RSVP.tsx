@@ -60,8 +60,8 @@ function ChoiceRow({
           onClick={() => onChange(opt)}
           className={`rounded-2xl border p-4 text-left text-sm transition ${
             value === opt
-              ? "border-[#2F4A6D] bg-[#F8F5F0] ring-2 ring-[#2F4A6D]/20"
-              : "border-[#E8DFD3] bg-white hover:border-[#7C9AB0]"
+              ? "border-[#4a3f35] bg-white/40 ring-2 ring-[#4a3f35]/20"
+              : "border-[#8b7967]/30 bg-[#F6F1E6]/70 backdrop-blur-md shadow-sm hover:border-[#7C9AB0]"
           }`}
         >
           {opt}
@@ -74,20 +74,20 @@ function ChoiceRow({
 function HowItWorks() {
   return (
     <section className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
-      <div className="rounded-[28px] border border-[#E8DFD3] bg-[#F8F5F0] p-6 sm:p-10">
+      <div className="rounded-[28px] border border-[#8b7967]/30 bg-white/40 p-6 sm:p-10">
         <div className="mx-auto mb-10 max-w-3xl text-center">
-          <p className="mb-3 text-xs uppercase tracking-[0.25em] text-[#7C9AB0] sm:text-sm">How it works</p>
-          <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-5xl mb-4">A simple two-step process</h2>
-          <p className="text-base text-[#2B2B2B] sm:text-lg">
+          <p className="mb-3 text-[10px] uppercase tracking-[0.25em] font-medium text-[#8b7967] sm:text-sm">How it works</p>
+          <h2 className="font-serif text-4xl text-[#4a3f35] sm:text-5xl italic mb-6">A simple two-step process</h2>
+          <p className="text-base text-[#5c4e40] sm:text-lg">
             We are using two separate forms to keep planning simple and make sure we collect the right
             information at the right time.
           </p>
         </div>
         <div className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[24px] bg-white p-6 sm:p-8">
-            <div className="mb-2 text-sm text-[#7C9AB0]">Form 1 — RSVP</div>
-            <h3 className="font-serif text-2xl text-[#2F4A6D] sm:text-3xl mb-3">Now until 1 November 2026</h3>
-            <ul className="list-disc space-y-2 pl-5 text-sm text-[#2B2B2B]">
+          <div className="rounded-[24px] bg-[#F6F1E6]/70 backdrop-blur-md shadow-sm p-6 sm:p-8">
+            <div className="mb-2 text-sm text-[#8b7967]">Form 1 — RSVP</div>
+            <h3 className="font-serif text-2xl text-[#4a3f35] sm:text-3xl italic mb-3">Now until 1 November 2026</h3>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-[#5c4e40]">
               <li>Confirm attendance</li>
               <li>Add your plus one</li>
               <li>Request accommodation</li>
@@ -95,10 +95,10 @@ function HowItWorks() {
               <li>Help us estimate the welcome dinner</li>
             </ul>
           </div>
-          <div className="rounded-[24px] bg-white p-6 sm:p-8">
-            <div className="mb-2 text-sm text-[#7C9AB0]">Form 2 — Logistics</div>
-            <h3 className="font-serif text-2xl text-[#2F4A6D] sm:text-3xl mb-3">February 2027</h3>
-            <ul className="list-disc space-y-2 pl-5 text-sm text-[#2B2B2B]">
+          <div className="rounded-[24px] bg-[#F6F1E6]/70 backdrop-blur-md shadow-sm p-6 sm:p-8">
+            <div className="mb-2 text-sm text-[#8b7967]">Form 2 — Logistics</div>
+            <h3 className="font-serif text-2xl text-[#4a3f35] sm:text-3xl italic mb-3">February 2027</h3>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-[#5c4e40]">
               <li>Flight and arrival details</li>
               <li>Final transfer coordination</li>
               <li>Dietary restrictions and allergies (final)</li>
@@ -106,7 +106,7 @@ function HowItWorks() {
             </ul>
             <Link
               to="/logistics"
-              className="mt-6 inline-flex rounded-full border border-[#2F4A6D] px-5 py-2 text-sm font-medium text-[#2F4A6D]"
+              className="mt-6 inline-flex rounded-full border border-[#4a3f35] px-5 py-2 text-sm font-medium text-[#4a3f35]"
             >
               Open logistics form (Form 2)
             </Link>
@@ -218,33 +218,33 @@ export function RSVP() {
   if (submitted && savedRow) {
     const csv = rowsToCsv([savedRow]);
     return (
-      <div className="min-h-[70vh] bg-gradient-to-b from-[#F8F5F0] to-[#E8DFD3] px-4 py-16 sm:py-24">
-        <div className="mx-auto max-w-lg rounded-[28px] bg-white p-8 text-center sm:p-10">
-          <h1 className="font-serif text-3xl text-[#2F4A6D] mb-4">Thank you</h1>
-          <p className="text-[#2B2B2B] mb-6">
+      <div className="min-h-[70vh] bg-transparent flex-1 flex flex-col justify-center px-4 py-16 sm:py-24">
+        <div className="mx-auto max-w-lg rounded-[28px] bg-[#F6F1E6]/70 backdrop-blur-md shadow-sm p-8 text-center sm:p-10">
+          <h1 className="font-serif text-3xl text-[#4a3f35] mb-4">Thank you</h1>
+          <p className="text-[#5c4e40] mb-6">
             Your RSVP has been saved in this browser for the demo. In production, wire this to email and a
             database, and forward accommodation requests to the hotel as per your process.
           </p>
           <button
             type="button"
             onClick={() => downloadCsvFile(`rsvp-${Date.now()}.csv`, csv)}
-            className="mb-3 w-full rounded-full bg-[#2F4A6D] px-6 py-3 text-white"
+            className="mb-3 w-full rounded-full bg-[#4a3f35] px-6 py-3 text-white"
           >
             Download this RSVP (CSV)
           </button>
-          <p className="mb-4 text-xs text-[#7C9AB0]">
+          <p className="mb-4 text-xs text-[#8b7967]">
             <Link to="/export" className="underline">
               Bulk export (organiser)
             </Link>
           </p>
-          <p className="mb-4 text-sm text-[#2B2B2B]">
+          <p className="mb-4 text-sm text-[#5c4e40]">
             In <strong>February 2027</strong> you&apos;ll receive a link for{" "}
-            <Link to="/logistics" className="text-[#2F4A6D] underline">
+            <Link to="/logistics" className="text-[#4a3f35] underline">
               Form 2 — logistics
             </Link>
             .
           </p>
-          <Link to="/" className="text-sm text-[#7C9AB0] underline">
+          <Link to="/" className="text-sm text-[#8b7967] underline">
             Back to home
           </Link>
         </div>
@@ -256,10 +256,10 @@ export function RSVP() {
     <>
       <HowItWorks />
 
-      <div className="bg-gradient-to-b from-[#F8F5F0] to-[#E8DFD3] px-4 pb-16 pt-2 sm:px-6 lg:px-8 lg:pb-24">
+      <div className="bg-transparent flex-1 flex flex-col justify-center px-4 pb-16 pt-2 sm:px-6 lg:px-8 lg:pb-24">
         <div className="mx-auto flex min-h-[560px] max-w-3xl items-center justify-center">
-          <div className="w-full rounded-[28px] bg-white p-6 sm:p-8">
-            <div className="mb-6 flex justify-between text-xs text-[#7C9AB0] sm:text-sm">
+          <div className="w-full rounded-[28px] bg-[#F6F1E6]/70 backdrop-blur-md shadow-sm p-6 sm:p-8">
+            <div className="mb-6 flex justify-between text-xs text-[#8b7967] sm:text-sm">
               <span>RSVP — Form 1</span>
               <span>
                 Step {step} of {TOTAL_STEPS}
@@ -267,7 +267,7 @@ export function RSVP() {
             </div>
             <div className="mb-8 h-2 w-full rounded-full bg-[#E8DFD3]">
               <div
-                className="h-2 rounded-full bg-[#2F4A6D] transition-[width] duration-300"
+                className="h-2 rounded-full bg-[#4a3f35] transition-[width] duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -280,45 +280,45 @@ export function RSVP() {
 
             {step === 1 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Contact</h2>
-                <p className="mb-6 text-sm text-[#2B2B2B] sm:text-base">
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Contact</h2>
+                <p className="mb-6 text-sm text-[#5c4e40] sm:text-base">
                   RSVP deadline: <strong>1 November 2026</strong>. A separate logistics form will follow in{" "}
                   <strong>February 2027</strong>.
                 </p>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm text-[#7C9AB0]" htmlFor="fullName">
+                    <label className="text-sm text-[#8b7967]" htmlFor="fullName">
                       Full name
                     </label>
                     <input
                       id="fullName"
-                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                      className="mt-2 w-full rounded-2xl border border-[#8b7967]/30 px-4 py-3"
                       value={form.fullName}
                       onChange={(e) => update("fullName", e.target.value)}
                       autoComplete="name"
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-[#7C9AB0]" htmlFor="email">
+                    <label className="text-sm text-[#8b7967]" htmlFor="email">
                       Email
                     </label>
                     <input
                       id="email"
                       type="email"
-                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                      className="mt-2 w-full rounded-2xl border border-[#8b7967]/30 px-4 py-3"
                       value={form.email}
                       onChange={(e) => update("email", e.target.value)}
                       autoComplete="email"
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-[#7C9AB0]" htmlFor="phone">
+                    <label className="text-sm text-[#8b7967]" htmlFor="phone">
                       Phone
                     </label>
                     <input
                       id="phone"
                       type="tel"
-                      className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                      className="mt-2 w-full rounded-2xl border border-[#8b7967]/30 px-4 py-3"
                       value={form.phone}
                       onChange={(e) => update("phone", e.target.value)}
                       autoComplete="tel"
@@ -330,8 +330,8 @@ export function RSVP() {
 
             {step === 2 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Attendance</h2>
-                <p className="mb-5 text-sm text-[#2B2B2B] sm:text-base">
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Attendance</h2>
+                <p className="mb-5 text-sm text-[#5c4e40] sm:text-base">
                   Will you join us on 17 April 2027?
                 </p>
                 <ChoiceRow
@@ -356,12 +356,12 @@ export function RSVP() {
 
             {step === 3 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Plus one</h2>
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Plus one</h2>
                 {!attending ? (
-                  <p className="text-[#2B2B2B]">No guest details needed — thank you for letting us know.</p>
+                  <p className="text-[#5c4e40]">No guest details needed — thank you for letting us know.</p>
                 ) : (
                   <>
-                    <p className="mb-5 text-sm text-[#2B2B2B]">Are you bringing a guest?</p>
+                    <p className="mb-5 text-sm text-[#5c4e40]">Are you bringing a guest?</p>
                     <ChoiceRow
                       options={["Yes", "No"]}
                       value={form.hasPlusOne === "yes" ? "Yes" : form.hasPlusOne === "no" ? "No" : ""}
@@ -370,12 +370,12 @@ export function RSVP() {
                     />
                     {form.hasPlusOne === "yes" && (
                       <div className="mt-6">
-                        <label className="text-sm text-[#7C9AB0]" htmlFor="plusOneName">
+                        <label className="text-sm text-[#8b7967]" htmlFor="plusOneName">
                           Guest name
                         </label>
                         <input
                           id="plusOneName"
-                          className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                          className="mt-2 w-full rounded-2xl border border-[#8b7967]/30 px-4 py-3"
                           value={form.plusOneName}
                           onChange={(e) => update("plusOneName", e.target.value)}
                         />
@@ -388,12 +388,12 @@ export function RSVP() {
 
             {step === 4 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Welcome dinner</h2>
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Welcome dinner</h2>
                 {!attending ? (
-                  <p className="text-[#2B2B2B]">We hope to celebrate with you another time.</p>
+                  <p className="text-[#5c4e40]">We hope to celebrate with you another time.</p>
                 ) : (
                   <>
-                    <p className="mb-5 text-sm text-[#2B2B2B]">
+                    <p className="mb-5 text-sm text-[#5c4e40]">
                       We may host a welcome gathering before the wedding. Will you join?
                     </p>
                     <ChoiceRow
@@ -414,13 +414,13 @@ export function RSVP() {
                       }}
                     />
                     <div className="mt-6">
-                      <label className="text-sm text-[#7C9AB0]" htmlFor="wg">
+                      <label className="text-sm text-[#8b7967]" htmlFor="wg">
                         Guest count estimate (optional, including you)
                       </label>
                       <input
                         id="wg"
                         inputMode="numeric"
-                        className="mt-2 w-full max-w-xs rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                        className="mt-2 w-full max-w-xs rounded-2xl border border-[#8b7967]/30 px-4 py-3"
                         value={form.welcomeGuests}
                         onChange={(e) => update("welcomeGuests", e.target.value)}
                         placeholder="e.g. 2"
@@ -433,12 +433,12 @@ export function RSVP() {
 
             {step === 5 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Accommodation</h2>
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Accommodation</h2>
                 {!attending ? (
-                  <p className="text-[#2B2B2B]">No accommodation needed.</p>
+                  <p className="text-[#5c4e40]">No accommodation needed.</p>
                 ) : (
                   <>
-                    <p className="mb-5 text-sm text-[#2B2B2B]">Would you like to stay at Castillo de Monda?</p>
+                    <p className="mb-5 text-sm text-[#5c4e40]">Would you like to stay at Castillo de Monda?</p>
                     <ChoiceRow
                       options={["Yes", "No", "Maybe"]}
                       value={
@@ -459,9 +459,9 @@ export function RSVP() {
                     {(form.stayAtCastle === "yes" || form.stayAtCastle === "maybe") && (
                       <div className="mt-6 space-y-4">
                         <div>
-                          <label className="text-sm text-[#7C9AB0]">Room type (optional)</label>
+                          <label className="text-sm text-[#8b7967]">Room type (optional)</label>
                           <select
-                            className="mt-2 w-full rounded-2xl border border-[#E8DFD3] bg-white px-4 py-3"
+                            className="mt-2 w-full rounded-2xl border border-[#8b7967]/30 bg-[#F6F1E6]/70 backdrop-blur-md shadow-sm px-4 py-3"
                             value={form.roomType}
                             onChange={(e) => update("roomType", e.target.value)}
                           >
@@ -472,7 +472,7 @@ export function RSVP() {
                           </select>
                         </div>
                         <div>
-                          <p className="text-sm text-[#7C9AB0] mb-2">Breakfast (€15 per person)</p>
+                          <p className="text-sm text-[#8b7967] mb-2">Breakfast (€15 per person)</p>
                           <ChoiceRow
                             options={["Yes", "No"]}
                             value={form.breakfast === "yes" ? "Yes" : form.breakfast === "no" ? "No" : ""}
@@ -482,8 +482,8 @@ export function RSVP() {
                         </div>
                       </div>
                     )}
-                    <div className="mt-6 rounded-[20px] bg-[#E8DFD3] p-5 text-sm text-[#2B2B2B]">
-                      <p className="font-semibold text-[#2F4A6D] mb-2">Important</p>
+                    <div className="mt-6 rounded-[20px] bg-[#E8DFD3] p-5 text-sm text-[#5c4e40]">
+                      <p className="font-semibold text-[#4a3f35] mb-2">Important</p>
                       <ul className="list-disc space-y-1 pl-5">
                         <li>The hotel will contact you directly.</li>
                         <li>This form does NOT confirm your reservation.</li>
@@ -497,12 +497,12 @@ export function RSVP() {
 
             {step === 6 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Transport</h2>
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Transport</h2>
                 {!attending ? (
-                  <p className="text-[#2B2B2B]">No transfer needed.</p>
+                  <p className="text-[#5c4e40]">No transfer needed.</p>
                 ) : (
                   <>
-                    <p className="mb-5 text-sm text-[#2B2B2B]">Do you need an organised transfer?</p>
+                    <p className="mb-5 text-sm text-[#5c4e40]">Do you need an organised transfer?</p>
                     <ChoiceRow
                       options={["Yes", "No", "Maybe"]}
                       value={
@@ -520,7 +520,7 @@ export function RSVP() {
                         else update("transfer", "maybe");
                       }}
                     />
-                    <p className="mt-4 text-xs text-[#7C9AB0]">
+                    <p className="mt-4 text-xs text-[#8b7967]">
                       Up to 4 people: €95 total · Up to 7 people: €100–€110 total (paid by guests).
                     </p>
                   </>
@@ -530,17 +530,17 @@ export function RSVP() {
 
             {step === 7 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-2">Dietary (light)</h2>
-                <p className="mb-4 text-sm text-[#2B2B2B]">
+                <h2 className="font-serif text-[28px] text-[#4a3f35] sm:text-3xl italic mb-4">Dietary (light)</h2>
+                <p className="mb-4 text-sm text-[#5c4e40]">
                   Optional. You&apos;ll confirm details again in the February logistics form.
                 </p>
-                <label className="text-sm text-[#7C9AB0]" htmlFor="dietary">
+                <label className="text-sm text-[#8b7967]" htmlFor="dietary">
                   Restrictions or allergies
                 </label>
                 <textarea
                   id="dietary"
                   rows={4}
-                  className="mt-2 w-full rounded-2xl border border-[#E8DFD3] px-4 py-3"
+                  className="mt-2 w-full rounded-2xl border border-[#8b7967]/30 px-4 py-3"
                   value={form.dietary}
                   onChange={(e) => update("dietary", e.target.value)}
                   placeholder="Leave blank if none"
@@ -550,28 +550,28 @@ export function RSVP() {
 
             {step === 8 && (
               <>
-                <h2 className="font-serif text-3xl text-[#2F4A6D] sm:text-4xl mb-3">Review</h2>
-                <dl className="space-y-3 text-sm text-[#2B2B2B]">
-                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                    <dt className="text-[#7C9AB0]">Name</dt>
+                <h2 className="font-serif text-3xl text-[#4a3f35] sm:text-4xl mb-3">Review</h2>
+                <dl className="space-y-3 text-sm text-[#5c4e40]">
+                  <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                    <dt className="text-[#8b7967]">Name</dt>
                     <dd className="text-right font-medium">{form.fullName || "—"}</dd>
                   </div>
-                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                    <dt className="text-[#7C9AB0]">Email</dt>
+                  <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                    <dt className="text-[#8b7967]">Email</dt>
                     <dd className="text-right font-medium break-all">{form.email || "—"}</dd>
                   </div>
-                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                    <dt className="text-[#7C9AB0]">Phone</dt>
+                  <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                    <dt className="text-[#8b7967]">Phone</dt>
                     <dd className="text-right font-medium">{form.phone || "—"}</dd>
                   </div>
-                  <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                    <dt className="text-[#7C9AB0]">Attendance</dt>
+                  <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                    <dt className="text-[#8b7967]">Attendance</dt>
                     <dd className="text-right font-medium">{form.attendance || "—"}</dd>
                   </div>
                   {attending && (
                     <>
-                      <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                        <dt className="text-[#7C9AB0]">Plus one</dt>
+                      <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                        <dt className="text-[#8b7967]">Plus one</dt>
                         <dd className="text-right font-medium">
                           {form.hasPlusOne === "yes"
                             ? form.plusOneName || "—"
@@ -580,34 +580,34 @@ export function RSVP() {
                               : "—"}
                         </dd>
                       </div>
-                      <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                        <dt className="text-[#7C9AB0]">Welcome dinner</dt>
+                      <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                        <dt className="text-[#8b7967]">Welcome dinner</dt>
                         <dd className="text-right font-medium">{form.welcomeDinner || "—"}</dd>
                       </div>
-                      <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                        <dt className="text-[#7C9AB0]">Castle stay</dt>
+                      <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                        <dt className="text-[#8b7967]">Castle stay</dt>
                         <dd className="text-right font-medium">{form.stayAtCastle || "—"}</dd>
                       </div>
                       {(form.stayAtCastle === "yes" || form.stayAtCastle === "maybe") && (
                         <>
-                          <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                            <dt className="text-[#7C9AB0]">Room type</dt>
+                          <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                            <dt className="text-[#8b7967]">Room type</dt>
                             <dd className="text-right font-medium">{form.roomType || "—"}</dd>
                           </div>
-                          <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                            <dt className="text-[#7C9AB0]">Breakfast</dt>
+                          <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                            <dt className="text-[#8b7967]">Breakfast</dt>
                             <dd className="text-right font-medium">{form.breakfast || "—"}</dd>
                           </div>
                         </>
                       )}
-                      <div className="flex justify-between gap-4 border-b border-[#E8DFD3] pb-2">
-                        <dt className="text-[#7C9AB0]">Transfer</dt>
+                      <div className="flex justify-between gap-4 border-b border-[#8b7967]/30 pb-2">
+                        <dt className="text-[#8b7967]">Transfer</dt>
                         <dd className="text-right font-medium">{form.transfer || "—"}</dd>
                       </div>
                     </>
                   )}
                   <div className="flex justify-between gap-4 pb-2">
-                    <dt className="text-[#7C9AB0]">Dietary</dt>
+                    <dt className="text-[#8b7967]">Dietary</dt>
                     <dd className="text-right font-medium max-w-[60%]">{form.dietary.trim() || "—"}</dd>
                   </div>
                 </dl>
@@ -619,16 +619,16 @@ export function RSVP() {
                 type="button"
                 onClick={back}
                 disabled={step === 1}
-                className="rounded-full border border-[#2F4A6D] px-6 py-3 text-[#2F4A6D] disabled:opacity-40"
+                className="rounded-full border border-[#4a3f35] px-6 py-3 text-[#4a3f35] disabled:opacity-40"
               >
                 Back
               </button>
               {step < TOTAL_STEPS ? (
-                <button type="button" onClick={next} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-white">
+                <button type="button" onClick={next} className="rounded-full bg-[#4a3f35] px-6 py-3 text-white">
                   Continue
                 </button>
               ) : (
-                <button type="button" onClick={submit} className="rounded-full bg-[#2F4A6D] px-6 py-3 text-white">
+                <button type="button" onClick={submit} className="rounded-full bg-[#4a3f35] px-6 py-3 text-white">
                   Submit RSVP
                 </button>
               )}

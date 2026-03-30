@@ -19,19 +19,19 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <div className="bg-[#F8F5F0] py-10 sm:py-14">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <p className="mb-3 text-center text-xs uppercase tracking-[0.25em] text-[#7C9AB0] sm:text-sm">
-          FAQ
+    <div className="py-16 sm:py-24 px-6 flex-1 flex flex-col">
+      <div className="mx-auto max-w-3xl w-full">
+        <p className="mb-3 text-center text-[10px] uppercase tracking-[0.25em] font-medium text-[#7d6c5b]">
+          Information
         </p>
-        <h1 className="font-serif text-center text-4xl text-[#2F4A6D] sm:text-5xl mb-10">
-          Common questions
+        <h1 className="font-serif text-center text-4xl text-[#4a3f35] sm:text-5xl italic mb-12">
+          Common Questions
         </h1>
         <ul className="space-y-4">
           {faqs.map(({ q, a }) => (
-            <li key={q} className="rounded-[22px] bg-white p-6 shadow-sm border border-[#E8DFD3]/60">
-              <h2 className="font-serif text-xl text-[#2F4A6D] mb-2">{q}</h2>
-              <p className="text-[#2B2B2B] text-sm sm:text-base leading-relaxed">{a}</p>
+            <li key={q} className="rounded-[20px] bg-[#F6F1E6]/70 backdrop-blur-md p-6 sm:p-8 shadow-sm border border-[#8b7967]/20 transition-all hover:bg-[#F6F1E6]/80">
+              <h2 className="font-serif text-[20px] text-[#4a3f35] mb-3">{q}</h2>
+              <p className="text-[#5c4e40] text-[15px] leading-relaxed">{a}</p>
             </li>
           ))}
         </ul>
